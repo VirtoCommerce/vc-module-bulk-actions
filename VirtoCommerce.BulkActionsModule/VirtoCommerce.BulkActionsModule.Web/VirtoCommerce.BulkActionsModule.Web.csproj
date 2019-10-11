@@ -150,7 +150,6 @@
     <Content Include="Scripts\blades\hello-world.js" />
     <Content Include="Scripts\blades\hello-world.html" />
     <Content Include="Scripts\module.js" />
-    <Content Include="Scripts\resources\virto-commerce.catalog-bulk-actions-module-api.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackgroundJobs\BulkActionJob.cs" />
