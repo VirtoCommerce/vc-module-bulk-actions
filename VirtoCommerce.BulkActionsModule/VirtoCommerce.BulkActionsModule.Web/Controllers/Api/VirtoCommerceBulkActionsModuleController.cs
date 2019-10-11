@@ -102,7 +102,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
         }
 
         /// <summary>
-        /// Starts bulk update background job.
+        /// Starts bulk action background job.
         /// </summary>
         /// <param name="context">Execution context.</param>
         /// <returns>Notification with job id.</returns>
