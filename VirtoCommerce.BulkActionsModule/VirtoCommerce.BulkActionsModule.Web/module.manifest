@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<module>
+    <id>VirtoCommerce.BulkActionsModule</id>
+    <version>1.0.2</version>
+    <platformVersion>2.13.44</platformVersion>
+    <dependencies>
+        <dependency id="VirtoCommerce.Core" version="2.25.21" />
+    </dependencies>
+
+    <title>Bulk Actions</title>
+    <description>Bulk actions module</description>
+    <authors>
+        <author>Burashov T.S.</author>
+    </authors>
+    <owners>
+      <owner>Virto Commerce</owner>
+    </owners>
+
+    <releaseNotes>First version.</releaseNotes>
+    <copyright>Copyright © 2019 . All rights reserved</copyright>
+    <tags>extension module</tags>
+  
+    <assemblyFile>VirtoCommerce.BulkActionsModule.Web.dll</assemblyFile>
+    <moduleType>VirtoCommerce.BulkActionsModule.Web.Module, VirtoCommerce.BulkActionsModule.Web</moduleType>
+
+    <styles>
+        <directory virtualPath="$/Content/css" searchPattern="*.css" searchSubdirectories="true" />
+    </styles>
+    <scripts>
+        <directory virtualPath="$/Scripts" searchPattern="*.js" searchSubdirectories="true" />
+    </scripts>
+
+    <settings>
+        <group name="General">
+            <setting>
+                <name>VirtoCommerce.BulkActionsModule.General.String</name>
+                <valueType>string</valueType>
+                <defaultValue>qwerty</defaultValue>
+                <title>String</title>
+                <description>A text setting</description>
+            </setting>
+            <setting>
+                <name>VirtoCommerce.BulkActionsModule.General.Password</name>
+                <valueType>secureString</valueType>
+                <defaultValue>qwerty</defaultValue>
+                <title>Password</title>
+                <description>A secure text setting</description>
+            </setting>
+            <setting>
+                <name>VirtoCommerce.BulkActionsModule.General.Integer</name>
+                <valueType>integer</valueType>
+                <defaultValue>123</defaultValue>
+                <title>Integer</title>
+                <description>An integer setting</description>
+            </setting>
+            <setting>
+                <name>VirtoCommerce.BulkActionsModule.General.Decimal</name>
+                <valueType>decimal</valueType>
+                <defaultValue>123.45</defaultValue>
+                <title>Decimal</title>
+                <description>A decimal setting</description>
+            </setting>
+        </group>
+        <group name="Advanced">
+            <setting>
+                <name>VirtoCommerce.BulkActionsModule.Advanced.Boolean1</name>
+                <valueType>boolean</valueType>
+                <defaultValue>true</defaultValue>
+                <title>Boolean1</title>
+                <description>A boolean setting</description>
+            </setting>
+            <setting>
+                <name>VirtoCommerce.BulkActionsModule.Advanced.Boolean2</name>
+                <valueType>boolean</valueType>
+                <defaultValue>false</defaultValue>
+                <title>Boolean2</title>
+                <description>A boolean setting</description>
+            </setting>
+            <setting>
+                <name>VirtoCommerce.BulkActionsModule.Advanced.Select</name>
+                <valueType>string</valueType>
+                <allowedValues>
+                    <value>qwerty</value>
+                    <value>asdfgh</value>
+                    <value>zxcvb</value>
+                </allowedValues>
+                <defaultValue>asdfgh</defaultValue>
+                <title>Select</title>
+                <description>Select one of the allowed values</description>
+            </setting>
+        </group>
+    </settings>
+  
+    <permissions>
+        <group name="VirtoCommerce.BulkActionsModule">
+            <permission id="VirtoCommerce.BulkActionsModule:read" name="Read" />
+            <permission id="VirtoCommerce.BulkActionsModule:update" name="Update" />
+            <permission id="VirtoCommerce.BulkActionsModule:delete" name="Delete" />
+        </group>
+    </permissions>
+</module>

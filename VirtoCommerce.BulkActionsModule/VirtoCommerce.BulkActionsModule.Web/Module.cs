@@ -1,0 +1,44 @@
+﻿namespace VirtoCommerce.BulkActionsModule.Web
+{
+    using System.Web.Http;
+
+    using Microsoft.Practices.Unity;
+
+    using VirtoCommerce.BulkActionsModule.Core.BulkActionAbstractions;
+    using VirtoCommerce.BulkActionsModule.Core.BulkActionImplementations;
+    using VirtoCommerce.BulkActionsModule.Web.JsonConverters;
+    using VirtoCommerce.Platform.Core.Modularity;
+
+    public class Module : ModuleBase
+    {
+        private readonly IUnityContainer _container;
+
+        public Module(IUnityContainer container)
+        {
+            _container = container;
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            // to shared module
+            _container.RegisterInstance<IBulkActionRegistrar>(new BulkActionRegistrar());
+            _container.RegisterType<IBulkActionExecutor, BulkActionExecutor>();
+        }
+
+        public override void PostInitialize()
+        {
+            base.PostInitialize();
+
+            var httpConfiguration = _container.Resolve<HttpConfiguration>();
+            var converter = new BulkActionContextJsonConverter();
+            httpConfiguration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(converter);
+        }
+
+        public override void SetupDatabase()
+        {
+            // idle
+        }
+    }
+}
