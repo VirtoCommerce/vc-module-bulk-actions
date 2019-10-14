@@ -1,4 +1,4 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Core.BulkActionModels
+﻿namespace VirtoCommerce.BulkActionsModule.Core.Models.BulkActions
 {
     public abstract class BulkActionContext
     {

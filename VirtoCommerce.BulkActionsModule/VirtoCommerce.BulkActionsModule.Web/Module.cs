@@ -4,8 +4,8 @@
 
     using Microsoft.Practices.Unity;
 
-    using VirtoCommerce.BulkActionsModule.Core.BulkActionAbstractions;
-    using VirtoCommerce.BulkActionsModule.Core.BulkActionImplementations;
+    using VirtoCommerce.BulkActionsModule.Core;
+    using VirtoCommerce.BulkActionsModule.Data.Services;
     using VirtoCommerce.BulkActionsModule.Web.JsonConverters;
     using VirtoCommerce.Platform.Core.Modularity;
 

@@ -6,7 +6,7 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
-    using VirtoCommerce.BulkActionsModule.Core.BulkActionModels;
+    using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
     using VirtoCommerce.Platform.Core.Common;
 
     public class BulkActionContextJsonConverter : JsonConverter

@@ -1,7 +1,5 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Core.BulkActionAbstractions
+﻿namespace VirtoCommerce.BulkActionsModule.Core
 {
-    using VirtoCommerce.BulkActionsModule.Core.DataSourceAbstractions;
-
     public interface IBulkActionProvider
     {
         string[] ApplicableTypes { get; set; }

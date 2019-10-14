@@ -1,10 +1,10 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Core.BulkActionImplementations
+﻿namespace VirtoCommerce.BulkActionsModule.Data.Services
 {
     using System;
     using System.Linq;
 
-    using VirtoCommerce.BulkActionsModule.Core.BulkActionAbstractions;
-    using VirtoCommerce.BulkActionsModule.Core.BulkActionModels;
+    using VirtoCommerce.BulkActionsModule.Core;
+    using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
     using VirtoCommerce.Platform.Core.Common;
 
     public class BulkActionExecutor : IBulkActionExecutor

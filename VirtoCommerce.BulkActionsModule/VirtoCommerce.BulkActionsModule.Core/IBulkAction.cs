@@ -1,8 +1,8 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Core.BulkActionAbstractions
+﻿namespace VirtoCommerce.BulkActionsModule.Core
 {
     using System.Collections.Generic;
 
-    using VirtoCommerce.BulkActionsModule.Core.BulkActionModels;
+    using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
     using VirtoCommerce.Platform.Core.Common;
 
     public interface IBulkAction

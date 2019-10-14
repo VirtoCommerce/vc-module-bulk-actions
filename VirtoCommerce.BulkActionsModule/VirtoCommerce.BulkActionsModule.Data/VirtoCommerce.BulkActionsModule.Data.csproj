@@ -78,11 +78,8 @@
   <ItemGroup>
     <Compile Include="Extensions\PushNotificationExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\CategoryMover.cs" />
-    <Compile Include="Services\IMover.cs" />
-    <Compile Include="Services\ISearchService.cs" />
-    <Compile Include="Services\SearchService.cs" />
-    <Compile Include="Services\ProductMover.cs" />
+    <Compile Include="Services\BulkActionExecutor.cs" />
+    <Compile Include="Services\BulkActionProviderStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.BulkActionsModule.Core\VirtoCommerce.BulkActionsModule.Core.csproj">
@@ -93,5 +90,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

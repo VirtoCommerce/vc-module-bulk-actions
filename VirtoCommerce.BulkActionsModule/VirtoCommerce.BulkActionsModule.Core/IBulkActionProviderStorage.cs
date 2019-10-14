@@ -1,4 +1,4 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Core.BulkActionAbstractions
+﻿namespace VirtoCommerce.BulkActionsModule.Core
 {
     using System.Collections.Generic;
 

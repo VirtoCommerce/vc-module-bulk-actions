@@ -1,6 +1,6 @@
 ﻿namespace VirtoCommerce.BulkActionsModule.Data.Extensions
 {
-    using VirtoCommerce.BulkActionsModule.Core.BulkActionModels;
+    using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
 
     public static class PushNotificationExtensions
     {

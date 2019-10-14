@@ -10,8 +10,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
     using Hangfire;
 
     using VirtoCommerce.BulkActionsModule.Core;
-    using VirtoCommerce.BulkActionsModule.Core.BulkActionAbstractions;
-    using VirtoCommerce.BulkActionsModule.Core.BulkActionModels;
+    using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
     using VirtoCommerce.BulkActionsModule.Web.BackgroundJobs;
     using VirtoCommerce.Platform.Core.Security;
     using VirtoCommerce.Platform.Core.Web.Security;

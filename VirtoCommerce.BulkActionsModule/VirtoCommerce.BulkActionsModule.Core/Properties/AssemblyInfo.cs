@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("VirtoCommerce.CatalogBulkActionsModule.Core")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("The common module of the bulk actions")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("VirtoCommerce")]
 [assembly: AssemblyProduct("VirtoCommerce.CatalogBulkActionsModule.Core")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("VirtoCommerce")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

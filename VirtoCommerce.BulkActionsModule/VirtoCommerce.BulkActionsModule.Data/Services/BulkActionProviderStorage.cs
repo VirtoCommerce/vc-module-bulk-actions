@@ -1,11 +1,11 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Core.BulkActionImplementations
+﻿namespace VirtoCommerce.BulkActionsModule.Data.Services
 {
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
 
-    using VirtoCommerce.BulkActionsModule.Core.BulkActionAbstractions;
+    using VirtoCommerce.BulkActionsModule.Core;
     using VirtoCommerce.Platform.Core.Common;
 
     public class BulkActionProviderStorage : IBulkActionProviderStorage

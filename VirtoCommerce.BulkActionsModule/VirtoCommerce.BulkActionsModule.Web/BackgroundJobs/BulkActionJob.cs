@@ -5,8 +5,8 @@
     using Hangfire;
     using Hangfire.Server;
 
-    using VirtoCommerce.BulkActionsModule.Core.BulkActionAbstractions;
-    using VirtoCommerce.BulkActionsModule.Core.BulkActionModels;
+    using VirtoCommerce.BulkActionsModule.Core;
+    using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
     using VirtoCommerce.BulkActionsModule.Data.Extensions;
     using VirtoCommerce.Platform.Core.PushNotifications;
     using VirtoCommerce.Platform.Data.Common;
