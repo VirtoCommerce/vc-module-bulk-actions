@@ -9,17 +9,17 @@
 
     public class BulkActionExecutor : IBulkActionExecutor
     {
-        private readonly IBulkActionRegistrar bulkActionRegistrar;
+        private readonly IBulkActionProviderStorage _bulkActionProviderStorage;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BulkActionExecutor"/> class.
         /// </summary>
-        /// <param name="bulkActionRegistrar">
+        /// <param name="bulkActionProviderStorage">
         /// The bulk update action registrar.
         /// </param>
-        public BulkActionExecutor(IBulkActionRegistrar bulkActionRegistrar)
+        public BulkActionExecutor(IBulkActionProviderStorage bulkActionProviderStorage)
         {
-            this.bulkActionRegistrar = bulkActionRegistrar;
+            _bulkActionProviderStorage = bulkActionProviderStorage;
         }
 
         public virtual void Execute(
@@ -42,8 +42,8 @@
 
             try
             {
-                var actionDefinition = bulkActionRegistrar.GetByName(context.ActionName);
-                var action = actionDefinition.BulkActionFactory.Create(context);
+                var actionProvider = _bulkActionProviderStorage.Get(context.ActionName);
+                var action = actionProvider.BulkActionFactory.Create(context);
 
                 var validationResult = action.Validate();
                 var proceed = validationResult.Succeeded;
@@ -64,10 +64,7 @@
 
                 if (proceed)
                 {
-                    var dataSourceFactory = actionDefinition.DataSourceFactory
-                                            ?? throw new ArgumentException(
-                                                nameof(BulkActionDefinition.DataSourceFactory));
-                    var dataSource = dataSourceFactory.Create(context);
+                    var dataSource = actionProvider.DataSourceFactory.Create(context);
                     totalCount = dataSource.GetTotalCount();
                     processedCount = 0;
 
@@ -114,7 +111,9 @@
             }
             finally
             {
-                var message = progressContext.Errors?.Count > 0 ? "The process has been completed with errors" : "Process is completed";
+                var message = progressContext.Errors?.Count > 0
+                                  ? "The process has been completed with errors"
+                                  : "Process is completed";
                 progressContext.Description = $"{message}: {processedCount} out of {totalCount} have been updated.";
                 progressCallback(progressContext);
             }

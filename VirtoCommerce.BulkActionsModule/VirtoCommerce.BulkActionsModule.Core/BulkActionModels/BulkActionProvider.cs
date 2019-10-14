@@ -5,10 +5,10 @@
     using VirtoCommerce.BulkActionsModule.Core.BulkActionAbstractions;
     using VirtoCommerce.BulkActionsModule.Core.DataSourceAbstractions;
 
-    public class BulkActionDefinition
+    public class BulkActionProvider : IBulkActionProvider
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BulkActionDefinition"/> class.
+        /// Initializes a new instance of the <see cref="BulkActionProvider"/> class.
         /// </summary>
         /// <param name="name">
         /// The name.
@@ -25,7 +25,7 @@
         /// <param name="bulkActionFactory">
         /// The bulk action factory.
         /// </param>
-        public BulkActionDefinition(
+        public BulkActionProvider(
             string name,
             string contextTypeName,
             string[] applicableTypes,

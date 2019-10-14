@@ -17,26 +17,26 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
     using VirtoCommerce.Platform.Core.Web.Security;
 
     [RoutePrefix("api/bulk")]
-    public class VirtoCommerceBulkActionsModuleController : ApiController
+    public class BulkActionsController : ApiController
     {
         private readonly IUserNameResolver _userNameResolver;
 
-        private readonly IBulkActionRegistrar bulkActionRegistrar;
+        private readonly IBulkActionProviderStorage _bulkActionProviderStorage;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VirtoCommerceBulkActionsModuleController"/> class.
+        /// Initializes a new instance of the <see cref="BulkActionsController"/> class.
         /// </summary>
-        /// <param name="bulkActionRegistrar">
+        /// <param name="bulkActionProviderStorage">
         /// The bulk update action registrar.
         /// </param>
         /// <param name="userNameResolver">
         /// The user name resolver.
         /// </param>
-        public VirtoCommerceBulkActionsModuleController(
-            IBulkActionRegistrar bulkActionRegistrar,
+        public BulkActionsController(
+            IBulkActionProviderStorage bulkActionProviderStorage,
             IUserNameResolver userNameResolver)
         {
-            this.bulkActionRegistrar = bulkActionRegistrar;
+            _bulkActionProviderStorage = bulkActionProviderStorage;
             _userNameResolver = userNameResolver;
         }
 
@@ -73,11 +73,11 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var actionDefinition = GetActionDefinition(context);
+            var actionProvider = _bulkActionProviderStorage.Get(context.ActionName);
 
-            if (Authorize(actionDefinition, context))
+            if (Authorize(actionProvider, context))
             {
-                var factory = actionDefinition.BulkActionFactory;
+                var factory = actionProvider.BulkActionFactory;
                 var action = factory.Create(context);
                 var actionData = action.GetActionData();
                 return Ok(actionData);
@@ -92,11 +92,11 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
         /// <returns>The list of registered actions</returns>
         [HttpGet]
         [Route]
-        [ResponseType(typeof(BulkActionDefinition[]))]
+        [ResponseType(typeof(BulkActionProvider[]))]
         [CheckPermission(Permission = BulkActionPredefinedPermissions.Read)]
         public IHttpActionResult GetRegisteredActions()
         {
-            var all = bulkActionRegistrar.GetAll();
+            var all = _bulkActionProviderStorage.GetAll();
             var array = all.ToArray();
             return Ok(array);
         }
@@ -117,9 +117,9 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var actionDefinition = GetActionDefinition(context);
+            var actionProvider = _bulkActionProviderStorage.Get(context.ActionName);
 
-            if (Authorize(actionDefinition, context))
+            if (Authorize(actionProvider, context))
             {
                 var creator = _userNameResolver.GetCurrentUserName();
                 var notification = new BulkActionPushNotification(creator)
@@ -137,26 +137,18 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
 
 
         /// <summary>
-        /// Performs all definition security handlers checks, and returns true if all are succeeded.
+        /// Performs all security handlers checks, and returns true if all are succeeded.
         /// </summary>
-        /// <param name="definition"></param>
+        /// <param name="provider"></param>
         /// <param name="context"></param>
         /// <returns>True if all checks are succeeded, otherwise false.</returns>
         [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "<Pending>")]
-        private bool Authorize(BulkActionDefinition definition, BulkActionContext context)
+        private bool Authorize(IBulkActionProvider provider, BulkActionContext context)
         {
             // TechDebt: Need to add permission and custom authorization for bulk update.
             // For that we could use IExportSecurityHandler and IPermissionExportSecurityHandlerFactory
             // - just need to move them to platform and remove export specific objects
             return true;
-        }
-
-        private BulkActionDefinition GetActionDefinition(BulkActionContext context)
-        {
-            var actionName = context.ActionName;
-            var entityName = nameof(IBulkActionRegistrar);
-            var message = $"Action \"{actionName}\" is not registered using \"{entityName}\".";
-            return bulkActionRegistrar.GetByName(actionName) ?? throw new ArgumentException(message);
         }
     }
 }

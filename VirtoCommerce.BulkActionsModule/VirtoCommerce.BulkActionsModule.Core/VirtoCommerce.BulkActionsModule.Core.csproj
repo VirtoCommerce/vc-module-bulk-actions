@@ -57,11 +57,12 @@
     <Compile Include="BulkActionAbstractions\IBulkAction.cs" />
     <Compile Include="BulkActionAbstractions\IBulkActionExecutor.cs" />
     <Compile Include="BulkActionAbstractions\IBulkActionFactory.cs" />
-    <Compile Include="BulkActionAbstractions\IBulkActionRegistrar.cs" />
+    <Compile Include="BulkActionAbstractions\IBulkActionProvider.cs" />
+    <Compile Include="BulkActionAbstractions\IBulkActionProviderStorage.cs" />
     <Compile Include="BulkActionImplementations\BulkActionExecutor.cs" />
-    <Compile Include="BulkActionImplementations\BulkActionRegistrar.cs" />
+    <Compile Include="BulkActionImplementations\BulkActionProviderStorage.cs" />
     <Compile Include="BulkActionModels\BulkActionContext.cs" />
-    <Compile Include="BulkActionModels\BulkActionDefinition.cs" />
+    <Compile Include="BulkActionModels\BulkActionProvider.cs" />
     <Compile Include="BulkActionModels\BulkActionProgressContext.cs" />
     <Compile Include="BulkActionModels\BulkActionPushNotification.cs" />
     <Compile Include="BulkActionModels\BulkActionResult.cs" />

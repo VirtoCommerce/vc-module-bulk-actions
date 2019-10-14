@@ -20,7 +20,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="BulkActionJob"/> class.
         /// </summary>
-        /// <param name="bulkActionRegistrar">
+        /// <param name="bulkActionProviderStorage">
         /// The bulk update action registrar.
         /// </param>
         /// <param name="pushNotificationManager">
@@ -30,7 +30,7 @@
         /// The bulk update action executor.
         /// </param>
         public BulkActionJob(
-            IBulkActionRegistrar bulkActionRegistrar,
+            IBulkActionProviderStorage bulkActionProviderStorage,
             IPushNotificationManager pushNotificationManager,
             IBulkActionExecutor bulkActionExecutor)
         {

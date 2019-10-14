@@ -23,7 +23,7 @@
             base.Initialize();
 
             // to shared module
-            _container.RegisterInstance<IBulkActionRegistrar>(new BulkActionRegistrar());
+            _container.RegisterInstance<IBulkActionProviderStorage>(new BulkActionProviderStorage());
             _container.RegisterType<IBulkActionExecutor, BulkActionExecutor>();
         }
 

@@ -154,7 +154,7 @@
   <ItemGroup>
     <Compile Include="BackgroundJobs\BulkActionJob.cs" />
     <Compile Include="BackgroundJobs\JobCancellationTokenWrapper.cs" />
-    <Compile Include="Controllers\Api\VirtoCommerceBulkActionsModuleController.cs" />
+    <Compile Include="Controllers\Api\BulkActionsController.cs" />
     <Compile Include="JsonConverters\BulkActionContextJsonConverter.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
