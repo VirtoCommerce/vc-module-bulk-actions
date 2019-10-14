@@ -1,0 +1,3 @@
+NuGet.exe spec
+
+pause
