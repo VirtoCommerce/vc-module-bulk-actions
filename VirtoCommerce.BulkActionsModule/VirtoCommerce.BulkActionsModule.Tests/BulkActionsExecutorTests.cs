@@ -18,13 +18,14 @@ namespace VirtoCommerce.BulkActionsModule.Tests
         public void Execute_ShouldInvokeMethod_Fetch()
         {
             // arrange
+            var succeeded = true;
             var bulkAction = Mock.Of<IBulkAction>();
             var cancellationToken = Mock.Of<ICancellationToken>();
             var bulkActionProviderStorage = Mock.Of<IBulkActionProviderStorage>();
             var pagedDataSource = Mock.Of<IPagedDataSource>();
             var bulkActionProvider = Mock.Of<IBulkActionProvider>();
-            var bulkActionValidationResult = Mock.Of<BulkActionResult>(t => t.Succeeded == true);
-            var bulkActionResult = Mock.Of<BulkActionResult>(t => t.Succeeded == true);
+            var bulkActionValidationResult = Mock.Of<BulkActionResult>(t => t.Succeeded == succeeded);
+            var bulkActionResult = Mock.Of<BulkActionResult>(t => t.Succeeded == succeeded);
 
             var bulkActionProviderStorageMock = Mock.Get(bulkActionProviderStorage);
             var bulkActionMock = Mock.Get(bulkAction);
