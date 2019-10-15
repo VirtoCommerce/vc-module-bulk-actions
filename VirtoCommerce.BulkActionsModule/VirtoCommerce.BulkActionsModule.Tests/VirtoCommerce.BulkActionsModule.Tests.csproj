@@ -104,14 +104,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Test.cs" />
+    <Compile Include="BulkActionProviderStorageTests.cs" />
+    <Compile Include="BulkActionsExecutorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VirtoCommerce.BulkActionsModule.Core\VirtoCommerce.BulkActionsModule.Core.csproj">
+      <Project>{ea5adcfb-bfbd-4131-8666-b4ba90f4de58}</Project>
+      <Name>VirtoCommerce.BulkActionsModule.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VirtoCommerce.BulkActionsModule.Data\VirtoCommerce.BulkActionsModule.Data.csproj">
+      <Project>{a41c6955-62e5-4f8f-b89d-d81abce4abf1}</Project>
+      <Name>VirtoCommerce.BulkActionsModule.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
