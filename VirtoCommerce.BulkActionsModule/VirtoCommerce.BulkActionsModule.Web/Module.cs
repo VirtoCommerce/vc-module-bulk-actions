@@ -1,7 +1,7 @@
 ﻿namespace VirtoCommerce.BulkActionsModule.Web
 {
     using System.Web.Http;
-
+    using Hangfire.Common;
     using Microsoft.Practices.Unity;
 
     using VirtoCommerce.BulkActionsModule.Core;
@@ -29,9 +29,9 @@
 
         public override void PostInitialize()
         {
-            base.PostInitialize();
-
+            base.PostInitialize();            
             var httpConfiguration = _container.Resolve<HttpConfiguration>();
+            JobHelper.SetSerializerSettings(httpConfiguration.Formatters.JsonFormatter.SerializerSettings);
             var converter = new BulkActionContextJsonConverter();
             httpConfiguration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(converter);
         }
