@@ -15,7 +15,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
     using VirtoCommerce.Platform.Core.Security;
     using VirtoCommerce.Platform.Core.Web.Security;
 
-    [RoutePrefix("api/bulk")]
+    [RoutePrefix("api/bulk/actions")]
     public class BulkActionsController : ApiController
     {
         private readonly IUserNameResolver _userNameResolver;
