@@ -6,10 +6,11 @@
     using System.Linq;
 
     using VirtoCommerce.BulkActionsModule.Core;
-    using VirtoCommerce.Platform.Core.Common;
 
     public class BulkActionProviderStorage : IBulkActionProviderStorage
     {
+        private const string StorageName = nameof(BulkActionProviderStorage);
+
         private readonly ConcurrentDictionary<string, IBulkActionProvider> _providers =
             new ConcurrentDictionary<string, IBulkActionProvider>();
 
@@ -19,26 +20,25 @@
 
             if (_providers.ContainsKey(name))
             {
-                // idle
-            }
-            else
-            {
-                _providers.TryAdd(name, provider);
+                throw new ArgumentException($"Action \"{name}\" is already registered.");
             }
 
-            return _providers[name];
+            if (_providers.TryAdd(name, provider))
+            {
+                return _providers[name];
+            }
+
+            throw new ArgumentException($"Action \"{name}\" adding fail.");
         }
 
         public IBulkActionProvider Get(string name)
         {
-            var action = _providers.Values.FirstOrDefault(value => value.Name.EqualsInvariant(name));
-            if (action == null)
+            if (_providers.TryGetValue(name, out var action))
             {
-                var message = $"Action \"{name}\" is not found in \"{nameof(IBulkActionProviderStorage)}\".";
-                throw new ArgumentException(message);
+                return action;
             }
 
-            return action;
+            throw new ArgumentException($"Action \"{name}\" is not found in \"{StorageName}\".");
         }
 
         public IEnumerable<IBulkActionProvider> GetAll()
