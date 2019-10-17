@@ -34,10 +34,5 @@
     </settings>
   
     <permissions>
-        <group name="VirtoCommerce.BulkActionsModule">
-            <permission id="VirtoCommerce.BulkActionsModule:read" name="Read" />
-            <permission id="VirtoCommerce.BulkActionsModule:update" name="Update" />
-            <permission id="VirtoCommerce.BulkActionsModule:delete" name="Delete" />
-        </group>
     </permissions>
 </module>
