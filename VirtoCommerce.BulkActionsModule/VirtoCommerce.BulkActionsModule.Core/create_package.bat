@@ -1,3 +1,0 @@
-NuGet.exe pack
-
-pause
