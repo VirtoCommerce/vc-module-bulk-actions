@@ -7,7 +7,7 @@
         <dependency id="VirtoCommerce.Core" version="2.25.21" />
     </dependencies>
 
-    <title>Bulk Actions</title>
+    <title>Bulk Actions(Preview)</title>
     <description>Bulk actions module</description>
     <authors>
         <author>Burashov T.S.</author>
