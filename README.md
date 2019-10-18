@@ -1,1 +1,1 @@
-# vc-module-bulk-actions
+# Bulk Actions Module
