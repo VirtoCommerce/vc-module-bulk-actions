@@ -138,7 +138,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="module.manifest" />
-    <Content Include="Content\css\virto-commerce.catalog-bulk-actions-module.css" />
     <Content Include="Scripts\module.js" />
   </ItemGroup>
   <ItemGroup>

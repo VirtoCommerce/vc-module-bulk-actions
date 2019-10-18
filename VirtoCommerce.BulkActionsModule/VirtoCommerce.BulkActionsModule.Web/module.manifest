@@ -24,7 +24,7 @@
     <moduleType>VirtoCommerce.BulkActionsModule.Web.Module, VirtoCommerce.BulkActionsModule.Web</moduleType>
 
     <styles>
-        <directory virtualPath="$/Content/css" searchPattern="*.css" searchSubdirectories="true" />
+        <!--<directory virtualPath="$/Content/css" searchPattern="*.css" searchSubdirectories="true" />-->
     </styles>
     <scripts>
         <directory virtualPath="$/Scripts" searchPattern="*.js" searchSubdirectories="true" />
