@@ -126,10 +126,6 @@
   <ItemGroup>
     <None Include="module.ignore" />
     <None Include="packages.config" />
-    <None Include="Content\help\index.html" />
-    <None Include="Content\help\stylesheet.css" />
-    <None Include="Content\help\sample.png" />
-    <None Include="Content\help\arch_scheme.png" />
     <Content Include="Localizations\en.VirtoCommerce.CatalogBulkActionsModule.json" />
     <None Include="app.config" />
     <None Include="Web.config" />
