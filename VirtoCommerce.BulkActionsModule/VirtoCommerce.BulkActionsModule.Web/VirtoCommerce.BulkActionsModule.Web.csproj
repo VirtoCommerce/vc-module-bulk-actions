@@ -143,8 +143,6 @@
   <ItemGroup>
     <Content Include="module.manifest" />
     <Content Include="Content\css\virto-commerce.catalog-bulk-actions-module.css" />
-    <Content Include="Scripts\blades\hello-world.js" />
-    <Content Include="Scripts\blades\hello-world.html" />
     <Content Include="Scripts\module.js" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +162,9 @@
       <Project>{a41c6955-62e5-4f8f-b89d-d81abce4abf1}</Project>
       <Name>VirtoCommerce.BulkActionsModule.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\blades\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

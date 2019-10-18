@@ -43,11 +43,6 @@ angular.module(moduleName, [])
             catalogBulkActionService,
             bladeNavigationService) {
 
-            function isItemsChecked(blade) {
-                var gridApi = blade.$scope.gridApi;
-                return gridApi && _.any(gridApi.selection.getSelectedRows());
-            }
-
             //Register module in main menu
             var menuItem = {
                 path: 'browse/virtoCommerce.bulkActionsModule',
