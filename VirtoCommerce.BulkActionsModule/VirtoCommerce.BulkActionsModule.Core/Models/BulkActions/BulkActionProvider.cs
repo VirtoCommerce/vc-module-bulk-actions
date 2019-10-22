@@ -26,7 +26,7 @@
             string name,
             string contextTypeName,
             string[] applicableTypes,
-            IPagedDataSourceFactory dataSourceFactory,
+            IDataSourceFactory dataSourceFactory,
             IBulkActionFactory bulkActionFactory)
         {
             Name = name;
@@ -56,7 +56,7 @@
         /// Gets or sets the data source factory.
         /// </summary>
         [JsonIgnore]
-        public IPagedDataSourceFactory DataSourceFactory { get; set; }
+        public IDataSourceFactory DataSourceFactory { get; set; }
 
         /// <summary>
         /// Gets or sets the name.

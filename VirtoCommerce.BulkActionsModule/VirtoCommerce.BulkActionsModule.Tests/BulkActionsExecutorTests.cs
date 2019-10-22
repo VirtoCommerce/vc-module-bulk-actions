@@ -22,7 +22,7 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             var bulkAction = Mock.Of<IBulkAction>();
             var cancellationToken = Mock.Of<ICancellationToken>();
             var bulkActionProviderStorage = Mock.Of<IBulkActionProviderStorage>();
-            var pagedDataSource = Mock.Of<IPagedDataSource>();
+            var pagedDataSource = Mock.Of<IDataSource>();
             var bulkActionProvider = Mock.Of<IBulkActionProvider>();
             var bulkActionValidationResult = Mock.Of<BulkActionResult>(t => t.Succeeded == succeeded);
             var bulkActionResult = Mock.Of<BulkActionResult>(t => t.Succeeded == succeeded);

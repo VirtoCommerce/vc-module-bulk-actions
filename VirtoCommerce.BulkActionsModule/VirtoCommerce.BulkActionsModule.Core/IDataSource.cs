@@ -4,7 +4,7 @@
 
     using VirtoCommerce.Platform.Core.Common;
 
-    public interface IPagedDataSource
+    public interface IDataSource
     {
         IEnumerable<IEntity> Items { get; }
 

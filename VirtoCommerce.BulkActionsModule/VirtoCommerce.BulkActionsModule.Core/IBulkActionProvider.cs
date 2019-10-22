@@ -8,7 +8,7 @@
 
         string ContextTypeName { get; set; }
 
-        IPagedDataSourceFactory DataSourceFactory { get; set; }
+        IDataSourceFactory DataSourceFactory { get; set; }
 
         string Name { get; set; }
     }

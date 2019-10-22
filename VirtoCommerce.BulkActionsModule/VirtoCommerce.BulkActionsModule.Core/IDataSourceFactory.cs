@@ -2,8 +2,8 @@
 {
     using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
 
-    public interface IPagedDataSourceFactory
+    public interface IDataSourceFactory
     {
-        IPagedDataSource Create(BulkActionContext context);
+        IDataSource Create(BulkActionContext context);
     }
 }
