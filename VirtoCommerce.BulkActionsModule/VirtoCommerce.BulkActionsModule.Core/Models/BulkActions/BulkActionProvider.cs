@@ -22,18 +22,23 @@
         /// <param name="bulkActionFactory">
         /// The bulk action factory.
         /// </param>
+        /// <param name="permissions">
+        /// The required Permissions.
+        /// </param>
         public BulkActionProvider(
             string name,
             string contextTypeName,
             string[] applicableTypes,
             IDataSourceFactory dataSourceFactory,
-            IBulkActionFactory bulkActionFactory)
+            IBulkActionFactory bulkActionFactory,
+            string[] permissions)
         {
             Name = name;
             ContextTypeName = contextTypeName;
             ApplicableTypes = applicableTypes;
             DataSourceFactory = dataSourceFactory;
             BulkActionFactory = bulkActionFactory;
+            Permissions = permissions;
         }
 
         /// <summary>
@@ -62,5 +67,10 @@
         /// Gets or sets the name.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the required permissions.
+        /// </summary>
+        public string[] Permissions { get; set; }
     }
 }
