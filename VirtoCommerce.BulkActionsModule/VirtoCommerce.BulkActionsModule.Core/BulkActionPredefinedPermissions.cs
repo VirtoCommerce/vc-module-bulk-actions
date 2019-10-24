@@ -2,10 +2,8 @@
 {
     public static class BulkActionPredefinedPermissions
     {
-        public const string Access = "bulkupdate:access";
+        public const string Execute = "bulk-actions:execute";
 
-        public const string Execute = "bulkupdate:execute";
-
-        public const string Read = "bulkupdate:read";
+        public const string Read = "bulk-actions:read";
     }
 }

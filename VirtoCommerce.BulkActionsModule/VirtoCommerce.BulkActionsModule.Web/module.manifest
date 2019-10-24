@@ -34,5 +34,9 @@
     </settings>
   
     <permissions>
+        <group name="Bulk Actions">
+            <permission id="bulk-actions:execute" name="Execute" />
+            <permission id="bulk-actions:read" name="Read" />
+        </group>
     </permissions>
 </module>
