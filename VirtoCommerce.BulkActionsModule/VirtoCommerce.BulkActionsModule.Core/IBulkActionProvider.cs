@@ -11,5 +11,7 @@
         IDataSourceFactory DataSourceFactory { get; set; }
 
         string Name { get; set; }
+
+        string[] Permissions { get; set; }
     }
 }
