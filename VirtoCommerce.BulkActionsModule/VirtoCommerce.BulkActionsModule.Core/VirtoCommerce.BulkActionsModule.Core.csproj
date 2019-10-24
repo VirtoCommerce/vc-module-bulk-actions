@@ -68,6 +68,7 @@
     <Compile Include="IDataSource.cs" />
     <Compile Include="IDataSourceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\ISecurityHandler.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
