@@ -1,7 +1,7 @@
-namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
+﻿namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
@@ -11,32 +11,42 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
 
     using VirtoCommerce.BulkActionsModule.Core;
     using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
+    using VirtoCommerce.BulkActionsModule.Core.Security;
+    using VirtoCommerce.BulkActionsModule.Data.Security;
     using VirtoCommerce.BulkActionsModule.Web.BackgroundJobs;
+    using VirtoCommerce.Platform.Core.Common;
     using VirtoCommerce.Platform.Core.Security;
     using VirtoCommerce.Platform.Core.Web.Security;
 
     [RoutePrefix("api/bulk/actions")]
     public class BulkActionsController : ApiController
     {
-        private readonly IUserNameResolver _userNameResolver;
-
         private readonly IBulkActionProviderStorage _bulkActionProviderStorage;
+
+        private readonly ISecurityHandlerFactory _securityHandlerFactory;
+
+        private readonly IUserNameResolver _userNameResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BulkActionsController"/> class.
         /// </summary>
         /// <param name="bulkActionProviderStorage">
-        /// The bulk update action registrar.
+        /// The bulk action provider storage.
         /// </param>
         /// <param name="userNameResolver">
         /// The user name resolver.
         /// </param>
+        /// <param name="securityHandlerFactory">
+        /// The security handler factory.
+        /// </param>
         public BulkActionsController(
             IBulkActionProviderStorage bulkActionProviderStorage,
-            IUserNameResolver userNameResolver)
+            IUserNameResolver userNameResolver,
+            ISecurityHandlerFactory securityHandlerFactory)
         {
             _bulkActionProviderStorage = bulkActionProviderStorage;
             _userNameResolver = userNameResolver;
+            _securityHandlerFactory = securityHandlerFactory;
         }
 
         /// <summary>
@@ -74,7 +84,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
 
             var actionProvider = _bulkActionProviderStorage.Get(context.ActionName);
 
-            if (Authorize(actionProvider, context))
+            if (IsAuthorizedUserHasPermissions(actionProvider.Permissions))
             {
                 var factory = actionProvider.BulkActionFactory;
                 var action = factory.Create(context);
@@ -95,9 +105,8 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
         [CheckPermission(Permission = BulkActionPredefinedPermissions.Read)]
         public IHttpActionResult GetRegisteredActions()
         {
-            var all = _bulkActionProviderStorage.GetAll();
-            var array = all.ToArray();
-            return Ok(array);
+            var allActions = _bulkActionProviderStorage.GetAll();
+            return Ok(allActions.ToArray());
         }
 
         /// <summary>
@@ -118,15 +127,17 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
 
             var actionProvider = _bulkActionProviderStorage.Get(context.ActionName);
 
-            if (Authorize(actionProvider, context))
+            if (IsAuthorizedUserHasPermissions(actionProvider.Permissions))
             {
                 var creator = _userNameResolver.GetCurrentUserName();
                 var notification = new BulkActionPushNotification(creator)
-                                       {
-                                           Title = $"{context.ActionName}", Description = "Starting�"
-                                       };
+                {
+                    Title = $"{context.ActionName}",
+                    Description = "Starting…"
+                };
 
-                notification.JobId = BackgroundJob.Enqueue<BulkActionJob>(job => job.Execute(context, notification, JobCancellationToken.Null, null));
+                notification.JobId = BackgroundJob.Enqueue<BulkActionJob>(
+                    job => job.Execute(context, notification, JobCancellationToken.Null, null));
 
                 return Ok(notification);
             }
@@ -134,20 +145,30 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
             return Unauthorized();
         }
 
-
         /// <summary>
         /// Performs all security handlers checks, and returns true if all are succeeded.
         /// </summary>
-        /// <param name="provider"></param>
-        /// <param name="context"></param>
-        /// <returns>True if all checks are succeeded, otherwise false.</returns>
-        [SuppressMessage("Major Code Smell", "S1172:Unused method parameters should be removed", Justification = "<Pending>")]
-        private bool Authorize(IBulkActionProvider provider, BulkActionContext context)
+        /// <param name="permissions">
+        /// The permissions.
+        /// </param>
+        /// <returns>
+        /// True if all checks are succeeded, otherwise false
+        /// </returns>
+        private bool IsAuthorizedUserHasPermissions(string[] permissions)
         {
-            // TechDebt: Need to add permission and custom authorization for bulk update.
-            // For that we could use IExportSecurityHandler and IPermissionExportSecurityHandlerFactory
-            // - just need to move them to platform and remove export specific objects
-            return true;
+            var handlers = new List<ISecurityHandler>();
+
+            if (!permissions.IsNullOrEmpty())
+            {
+                var securityHandler = _securityHandlerFactory.Create(permissions);
+                handlers.Add(securityHandler);
+            }
+            else
+            {
+                // idle
+            }
+
+            return handlers.All(handler => handler.Authorize(User.Identity.Name));
         }
     }
 }
