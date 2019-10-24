@@ -5,6 +5,7 @@
     using Microsoft.Practices.Unity;
 
     using VirtoCommerce.BulkActionsModule.Core;
+    using VirtoCommerce.BulkActionsModule.Data.Security;
     using VirtoCommerce.BulkActionsModule.Data.Services;
     using VirtoCommerce.BulkActionsModule.Web.JsonConverters;
     using VirtoCommerce.Platform.Core.Modularity;
@@ -25,6 +26,7 @@
             // to shared module
             _container.RegisterInstance<IBulkActionProviderStorage>(new BulkActionProviderStorage());
             _container.RegisterType<IBulkActionExecutor, BulkActionExecutor>();
+            _container.RegisterType<ISecurityHandlerFactory, SecurityHandlerFactory>();
         }
 
         public override void PostInitialize()
