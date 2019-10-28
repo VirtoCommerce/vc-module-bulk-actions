@@ -2,6 +2,8 @@
 {
     using System;
 
+    using FluentAssertions;
+
     using Moq;
 
     using VirtoCommerce.BulkActionsModule.Core;
@@ -22,7 +24,7 @@
             var result = actionProviderStorage.Add(bulkActionProvider);
 
             // assert
-            Assert.NotNull(result);
+            result.Should().NotBeNull();
         }
 
         [Fact]
@@ -36,7 +38,7 @@
             var action = new Action(() => actionProviderStorage.Add(bulkActionProvider));
 
             // assert
-            Assert.Throws<ArgumentNullException>(action);
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [Fact]
@@ -50,7 +52,7 @@
             var result = actionProviderStorage.Get("test1");
 
             // assert
-            Assert.NotNull(result);
+            result.Should().NotBeNull();
         }
 
         [Fact]
@@ -63,7 +65,7 @@
             var action = new Action(() => actionProviderStorage.Get("Unknown_action"));
 
             // assert
-            Assert.Throws<ArgumentException>(action);
+            action.Should().Throw<ArgumentException>();
         }
 
         [Fact]
@@ -77,7 +79,7 @@
             var result = actionProviderStorage.GetAll();
 
             // assert
-            Assert.Single(result);
+            result.Should().ContainSingle();
         }
 
         [Fact]
@@ -90,7 +92,7 @@
             var result = actionProviderStorage.GetAll();
 
             // assert
-            Assert.IsType<IBulkActionProvider[]>(result);
+            result.Should().BeOfType<IBulkActionProvider[]>();
         }
     }
 }

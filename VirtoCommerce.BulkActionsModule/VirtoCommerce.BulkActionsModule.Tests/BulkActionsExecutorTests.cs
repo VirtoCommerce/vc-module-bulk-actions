@@ -1,7 +1,9 @@
-namespace VirtoCommerce.BulkActionsModule.Tests
+﻿namespace VirtoCommerce.BulkActionsModule.Tests
 {
     using System;
     using System.Collections.Generic;
+
+    using FluentAssertions;
 
     using Moq;
 
@@ -88,7 +90,7 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             var action = new Action(() => bulkActionExecutor.Execute(null, null, null));
 
             // assert
-            Assert.Throws<ArgumentNullException>(action);
+            action.Should().Throw<ArgumentNullException>();
         }
     }
 }
