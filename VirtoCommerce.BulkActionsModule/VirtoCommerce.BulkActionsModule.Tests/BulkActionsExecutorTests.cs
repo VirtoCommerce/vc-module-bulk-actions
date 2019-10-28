@@ -74,7 +74,7 @@
             bulkActionExecutor.Execute(Mock.Of<BulkActionContext>(), callback => { }, cancellationToken);
 
             // assert
-            cancellationTokenMock.Verify(token => token.ThrowIfCancellationRequested(), () => Times.Exactly(2));
+            cancellationTokenMock.Verify(token => token.ThrowIfCancellationRequested(), () => Times.Exactly(1));
         }
 
         [Fact]

@@ -9,7 +9,7 @@
     {
         void Execute(
             BulkActionContext context,
-            Action<BulkActionProgressContext> progressCallback,
+            Action<BulkActionProgressContext> progressAction,
             ICancellationToken token);
     }
 }
