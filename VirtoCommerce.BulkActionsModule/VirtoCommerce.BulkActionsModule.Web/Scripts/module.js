@@ -44,15 +44,15 @@ angular.module(moduleName, [])
             bladeNavigationService) {
 
             //Register module in main menu
-            var menuItem = {
-                path: 'browse/virtoCommerce.bulkActionsModule',
-                icon: 'fa fa-cube',
-                title: 'VirtoCommerce.bulkActionsModule',
-                priority: 100,
-                action: function () { $state.go('workspace.virtoCommerceBulkActionsModuleState'); },
-                permission: 'virtoCommerce.bulkActionsModule.WebPermission'
-            };
-            mainMenuService.addMenuItem(menuItem);
+            //var menuItem = {
+            //    path: 'browse/virtoCommerce.bulkActionsModule',
+            //    icon: 'fa fa-cube',
+            //    title: 'VirtoCommerce.bulkActionsModule',
+            //    priority: 100,
+            //    action: function () { $state.go('workspace.virtoCommerceBulkActionsModuleState'); },
+            //    permission: 'virtoCommerce.bulkActionsModule.WebPermission'
+            //};
+            //mainMenuService.addMenuItem(menuItem);
 
         }
 ]);
