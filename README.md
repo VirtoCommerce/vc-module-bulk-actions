@@ -37,7 +37,7 @@ Further, the BAM provides following interfaces for your custom implementations:
 **IBulkActionExecutor** – implemented in the BAM (named BulkActionExecutor). If you needed it can be overriden. 
 
  
-## Custom bulk actions module
+## How to register your custom bulk actions module:
 
 For the beginning you should implement following interfaces: 
 
