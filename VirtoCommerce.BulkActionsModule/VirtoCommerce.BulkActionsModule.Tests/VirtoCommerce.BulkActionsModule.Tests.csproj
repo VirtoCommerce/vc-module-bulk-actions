@@ -53,6 +53,12 @@
     <Reference Include="FluentAssertions, Version=5.9.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FluentAssertions.5.9.0\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Host.SystemWeb.3.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="Moq, Version=4.12.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Moq.4.12.0\lib\net45\Moq.dll</HintPath>
     </Reference>
@@ -65,10 +71,16 @@
     <Reference Include="Omu.ValueInjecter, Version=2.3.3.0, Culture=neutral, PublicKeyToken=c7694541b0ac80e4, processorArchitecture=MSIL">
       <HintPath>..\..\packages\valueinjecter.2.3.3\lib\net35\Omu.ValueInjecter.dll</HintPath>
     </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -80,6 +92,9 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -89,8 +104,11 @@
     <Reference Include="VirtoCommerce.Domain, Version=2.25.21.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\VirtoCommerce.Domain.2.25.21\lib\net461\VirtoCommerce.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Core, Version=2.13.44.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\VirtoCommerce.Platform.Core.2.13.44\lib\net461\VirtoCommerce.Platform.Core.dll</HintPath>
+    <Reference Include="VirtoCommerce.Platform.Core, Version=2.13.52.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\VirtoCommerce.Platform.Core.2.13.52\lib\net461\VirtoCommerce.Platform.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="VirtoCommerce.Platform.Core.Web, Version=2.13.52.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\VirtoCommerce.Platform.Core.Web.2.13.52\lib\net461\VirtoCommerce.Platform.Core.Web.dll</HintPath>
     </Reference>
     <Reference Include="VirtoCommerce.Platform.Data, Version=2.13.44.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\VirtoCommerce.Platform.Data.2.13.44\lib\net461\VirtoCommerce.Platform.Data.dll</HintPath>
@@ -113,7 +131,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BulkActionProviderStorageTests.cs" />
+    <Compile Include="BulkActionsControllerTests.cs" />
     <Compile Include="BulkActionsExecutorTests.cs" />
+    <Compile Include="Models\TestBulkActionContext.cs" />
+    <Compile Include="Models\TestBulkActionProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -132,7 +153,12 @@
       <Project>{a41c6955-62e5-4f8f-b89d-d81abce4abf1}</Project>
       <Name>VirtoCommerce.BulkActionsModule.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VirtoCommerce.BulkActionsModule.Web\VirtoCommerce.BulkActionsModule.Web.csproj">
+      <Project>{7ca2750e-2341-4646-84dc-c8ca20deeddd}</Project>
+      <Name>VirtoCommerce.BulkActionsModule.Web</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
