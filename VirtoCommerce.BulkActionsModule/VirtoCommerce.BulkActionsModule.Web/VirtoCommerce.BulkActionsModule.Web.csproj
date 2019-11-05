@@ -141,7 +141,9 @@
     <Content Include="Scripts\module.js" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackgroundJobs\BackgroundJobExecutor.cs" />
     <Compile Include="BackgroundJobs\BulkActionJob.cs" />
+    <Compile Include="BackgroundJobs\IBackgroundJobExecutor.cs" />
     <Compile Include="BackgroundJobs\JobCancellationTokenWrapper.cs" />
     <Compile Include="Controllers\Api\BulkActionsController.cs" />
     <Compile Include="JsonConverters\BulkActionContextJsonConverter.cs" />
