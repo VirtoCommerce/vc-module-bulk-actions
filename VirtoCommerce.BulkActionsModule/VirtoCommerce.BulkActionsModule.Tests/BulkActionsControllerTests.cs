@@ -51,7 +51,7 @@
         }
 
         [Fact]
-        public void Cancel_Should_Return_NotContent_Result()
+        public void Cancel_EmptyString_NotContentResult()
         {
             // arrange
 
@@ -63,7 +63,7 @@
         }
 
         [Fact]
-        public void Cancel_Should_Return_Result_of_Type()
+        public void Cancel_EmptyString_StatusCodeResult()
         {
             // arrange
 
@@ -78,7 +78,7 @@
         [InlineData(typeof(HttpDeleteAttribute))]
         [InlineData(typeof(CheckPermissionAttribute))]
         [InlineData(typeof(RouteAttribute))]
-        public void Cancel_ShouldBeMarkedAttribute(Type attributeType)
+        public void Cancel_CheckAttribute_ShouldBeMarkedAttribute(Type attributeType)
         {
             // arrange
             var methodName = nameof(BulkActionsController.Cancel);
@@ -97,7 +97,7 @@
         [InlineData(typeof(CheckPermissionAttribute))]
         [InlineData(typeof(RouteAttribute))]
         [InlineData(typeof(ResponseTypeAttribute))]
-        public void GeRegisteredActions_ShouldBeMarkedAttribute(Type attributeType)
+        public void GeRegisteredActions_CheckAttribute_ShouldBeMarkedAttribute(Type attributeType)
         {
             // arrange
             var methodName = nameof(BulkActionsController.GetRegisteredActions);
@@ -115,7 +115,7 @@
         [InlineData(typeof(HttpPostAttribute))]
         [InlineData(typeof(CheckPermissionAttribute))]
         [InlineData(typeof(RouteAttribute))]
-        public void GetActionData_ShouldBeMarkedAttribute(Type attributeType)
+        public void GetActionData_CheckAttribute_ShouldBeMarkedAttribute(Type attributeType)
         {
             // arrange
             var methodName = nameof(BulkActionsController.GetActionData);
@@ -130,7 +130,7 @@
         }
 
         [Fact]
-        public void GetActionData_ShouldThrowArgumentNullException()
+        public void GetActionData_NullArg_ThrowArgumentNullException()
         {
             // arrange
 
@@ -146,7 +146,7 @@
         }
 
         [Fact]
-        public void GetActionsData_BulkActionFactoryShouldInvokeMethod()
+        public void GetActionsData_BulkActionFactory_InvokeCreate()
         {
             // arrange
             var provider = BuildProvider();
@@ -161,7 +161,7 @@
         }
 
         [Fact]
-        public void GetActionsData_BulkActionProviderStorageShouldInvokeMethod()
+        public void GetActionsData_BulkActionProviderStorage_InvokeGet()
         {
             // arrange
             var provider = BuildProvider();
@@ -175,7 +175,7 @@
         }
 
         [Fact]
-        public void GetActionsData_BulkActionShouldInvokeMethod()
+        public void GetActionsData_BulkAction_InvokeGetActionData()
         {
             // arrange
             var provider = BuildProvider();
@@ -193,7 +193,7 @@
         }
 
         [Fact]
-        public void GetActionsData_SecurityHandlerFactoryShouldInvokeMethod()
+        public void GetActionsData_SecurityHandlerFactory_InvokeCreate()
         {
             // arrange
             var provider = BuildProvider();
@@ -209,7 +209,7 @@
         }
 
         [Fact]
-        public void GetActionsData_ShouldReturnUnauthorizedResult()
+        public void GetActionsData_AuthorizationFail_UnauthorizedResult()
         {
             // arrange
             var provider = BuildProvider();
@@ -225,7 +225,7 @@
         }
 
         [Fact]
-        public void GetRegisteredActions_ShouldReturnOkNegotiatedContentResult()
+        public void GetRegisteredActions_ShouldReturn_OkNegotiatedContentResult()
         {
             // arrange
 
@@ -237,7 +237,7 @@
         }
 
         [Fact]
-        public void Run_BulkActionProviderStorageShouldInvokeMethod()
+        public void Run_BulkActionProviderStorage_InvokeGet()
         {
             // arrange
             var provider = BuildProvider();
@@ -254,7 +254,7 @@
         [InlineData(typeof(HttpPostAttribute))]
         [InlineData(typeof(CheckPermissionAttribute))]
         [InlineData(typeof(RouteAttribute))]
-        public void Run_ShouldBeMarkedAttribute(Type attributeType)
+        public void Run_CheckAttribute_ShouldBeMarkedAttribute(Type attributeType)
         {
             // arrange
             var methodName = nameof(BulkActionsController.Run);
@@ -269,7 +269,7 @@
         }
 
         [Fact]
-        public void Run_ShouldReturnOkNegotiatedResult()
+        public void Run_ShouldReturn_OkNegotiatedResult()
         {
             // arrange
             var provider = BuildProvider();
@@ -284,7 +284,7 @@
         }
 
         [Fact]
-        public void Run_ShouldReturnUnauthorizedResult()
+        public void Run_ShouldReturn_UnauthorizedResult()
         {
             // arrange
             var provider = BuildProvider();
@@ -300,7 +300,7 @@
         }
 
         [Fact]
-        public void Run_UserNameResolverShouldInvokeMethod()
+        public void Run_UserNameResolver_InvokeGetCurrentUserName()
         {
             // arrange
             var provider = BuildProvider();

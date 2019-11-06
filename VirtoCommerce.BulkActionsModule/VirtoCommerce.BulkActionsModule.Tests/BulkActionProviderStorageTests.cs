@@ -14,7 +14,7 @@
     public class BulkActionProviderStorageTests
     {
         [Fact]
-        public void Add_ShouldReturn_NotNull()
+        public void Add_TryAdd_NotNull()
         {
             // arrange
             var bulkActionProvider = Mock.Of<IBulkActionProvider>(t => t.Name == "test1");
@@ -28,7 +28,7 @@
         }
 
         [Fact]
-        public void Add_ShouldThrow_ArgumentNullException()
+        public void Add_EmptyProviderName_ThrowArgumentNullException()
         {
             // arrange
             var bulkActionProvider = Mock.Of<IBulkActionProvider>();
@@ -42,7 +42,7 @@
         }
 
         [Fact]
-        public void Add_ShouldThrow_ArgumentException()
+        public void Add_IfContainsKey_ThrowArgumentException()
         {
             // arrange
             var bulkActionProvider = Mock.Of<IBulkActionProvider>(t => t.Name == "test");
@@ -57,7 +57,7 @@
         }
 
         [Fact]
-        public void Get_ShouldReturn_NotNull()
+        public void Get_IfExists_NotNull()
         {
             // arrange
             var actionProviderStorage = new BulkActionProviderStorage();
@@ -71,7 +71,7 @@
         }
 
         [Fact]
-        public void Get_ShouldThrow_ArgumentException()
+        public void Get_IfNotExists_ThrowArgumentException()
         {
             // arrange
             var actionProviderStorage = new BulkActionProviderStorage();
@@ -84,7 +84,7 @@
         }
 
         [Fact]
-        public void GetAll_ResultShouldBe_Single()
+        public void GetAll_HasSomeItems_ShouldBeSingle()
         {
             // arrange
             var actionProviderStorage = new BulkActionProviderStorage();
@@ -98,7 +98,7 @@
         }
 
         [Fact]
-        public void GetAll_ResultShouldBeType_IBulkActionProviderArray()
+        public void GetAll_ResultType_IBulkActionProviderArray()
         {
             // arrange
             var actionProviderStorage = new BulkActionProviderStorage();
