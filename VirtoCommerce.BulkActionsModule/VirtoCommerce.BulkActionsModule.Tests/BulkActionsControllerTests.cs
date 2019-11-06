@@ -25,38 +25,16 @@
 
     public class BulkActionsControllerTests
     {
-        private readonly Mock<IBackgroundJobExecutor> _backgroundExecutor;
-
-        private readonly Mock<IBulkActionProviderStorage> _bulkActionProviderStorage;
-
-        private readonly BulkActionsController _controller;
-
         private readonly Type _controllerType = typeof(BulkActionsController);
-
-        private readonly Mock<ISecurityHandlerFactory> _securityHandlerFactory;
-
-        private readonly Mock<IUserNameResolver> _userNameResolver;
-
-        public BulkActionsControllerTests()
-        {
-            _bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
-            _userNameResolver = new Mock<IUserNameResolver>();
-            _securityHandlerFactory = new Mock<ISecurityHandlerFactory>();
-            _backgroundExecutor = new Mock<IBackgroundJobExecutor>();
-            _controller = new BulkActionsController(
-                _bulkActionProviderStorage.Object,
-                _userNameResolver.Object,
-                _securityHandlerFactory.Object,
-                _backgroundExecutor.Object);
-        }
 
         [Fact]
         public void Cancel_EmptyString_NotContentResult()
         {
             // arrange
+            var controller = BuildController();
 
             // act
-            var result = (StatusCodeResult)_controller.Cancel(string.Empty);
+            var result = (StatusCodeResult)controller.Cancel(string.Empty);
 
             // assert
             result.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -66,9 +44,10 @@
         public void Cancel_EmptyString_StatusCodeResult()
         {
             // arrange
+            var controller = BuildController();
 
             // act
-            var result = _controller.Cancel(string.Empty);
+            var result = controller.Cancel(string.Empty);
 
             // assert
             result.Should().BeOfType<StatusCodeResult>();
@@ -133,12 +112,13 @@
         public void GetActionData_NullArg_ThrowArgumentNullException()
         {
             // arrange
+            var controller = BuildController();
 
             // act
             var action = new Action(
                 () =>
                 {
-                    _controller.GetActionData(null);
+                    controller.GetActionData(null);
                 });
 
             // assert
@@ -149,12 +129,14 @@
         public void GetActionsData_BulkActionFactory_InvokeCreate()
         {
             // arrange
+            var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
+            var controller = BuildController(bulkActionProviderStorage);
             var provider = BuildProvider();
-            _bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
+            bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
             var mock = Mock.Get(provider.BulkActionFactory);
 
             // act
-            _controller.GetActionData(Mock.Of<TestBulkActionContext>());
+            controller.GetActionData(Mock.Of<TestBulkActionContext>());
 
             // assert
             mock.Verify(t => t.Create(It.IsAny<BulkActionContext>()), Times.Exactly(1));
@@ -164,29 +146,33 @@
         public void GetActionsData_BulkActionProviderStorage_InvokeGet()
         {
             // arrange
+            var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
+            var controller = BuildController(bulkActionProviderStorage);
             var provider = BuildProvider();
-            _bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
+            bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
 
             // act
-            _controller.GetActionData(Mock.Of<TestBulkActionContext>());
+            controller.GetActionData(Mock.Of<TestBulkActionContext>());
 
             // assert
-            _bulkActionProviderStorage.Verify(t => t.Get(It.IsAny<string>()), Times.Exactly(1));
+            bulkActionProviderStorage.Verify(t => t.Get(It.IsAny<string>()), Times.Exactly(1));
         }
 
         [Fact]
         public void GetActionsData_BulkAction_InvokeGetActionData()
         {
             // arrange
+            var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
+            var controller = BuildController(bulkActionProviderStorage);
             var provider = BuildProvider();
-            _bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
+            bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
             var mock = Mock.Get(provider.BulkActionFactory);
             var bulkActionMock = Mock.Get(Mock.Of<IBulkAction>());
             bulkActionMock.Setup(t => t.GetActionData());
             mock.Setup(t => t.Create(It.IsAny<BulkActionContext>())).Returns(bulkActionMock.Object);
 
             // act
-            _controller.GetActionData(Mock.Of<TestBulkActionContext>());
+            controller.GetActionData(Mock.Of<TestBulkActionContext>());
 
             // assert
             bulkActionMock.Verify(t => t.GetActionData(), Times.Exactly(1));
@@ -196,29 +182,35 @@
         public void GetActionsData_SecurityHandlerFactory_InvokeCreate()
         {
             // arrange
+            var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
+            var securityHandlerFactory = new Mock<ISecurityHandlerFactory>();
+            var controller = BuildController(bulkActionProviderStorage, securityHandlerFactory);
             var provider = BuildProvider();
             provider.Permissions = new[] { "permission1" };
-            _bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
-            _securityHandlerFactory.Setup(t => t.Create(provider.Permissions)).Returns(Mock.Of<ISecurityHandler>());
+            bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
+            securityHandlerFactory.Setup(t => t.Create(provider.Permissions)).Returns(Mock.Of<ISecurityHandler>());
 
             // act
-            _controller.GetActionData(Mock.Of<TestBulkActionContext>());
+            controller.GetActionData(Mock.Of<TestBulkActionContext>());
 
             // assert
-            _securityHandlerFactory.Verify(t => t.Create(It.IsAny<string[]>()), Times.Exactly(1));
+            securityHandlerFactory.Verify(t => t.Create(It.IsAny<string[]>()), Times.Exactly(1));
         }
 
         [Fact]
         public void GetActionsData_AuthorizationFail_UnauthorizedResult()
         {
             // arrange
+            var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
+            var securityHandlerFactory = new Mock<ISecurityHandlerFactory>();
+            var controller = BuildController(bulkActionProviderStorage, securityHandlerFactory);
             var provider = BuildProvider();
             provider.Permissions = new[] { "permission1" };
-            _bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
-            _securityHandlerFactory.Setup(t => t.Create(provider.Permissions)).Returns(Mock.Of<ISecurityHandler>());
+            bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
+            securityHandlerFactory.Setup(t => t.Create(provider.Permissions)).Returns(Mock.Of<ISecurityHandler>());
 
             // act
-            var result = _controller.GetActionData(Mock.Of<TestBulkActionContext>());
+            var result = controller.GetActionData(Mock.Of<TestBulkActionContext>());
 
             // assert
             result.Should().BeOfType<UnauthorizedResult>();
@@ -228,9 +220,10 @@
         public void GetRegisteredActions_ShouldReturn_OkNegotiatedContentResult()
         {
             // arrange
+            var controller = BuildController();
 
             // act
-            var result = _controller.GetRegisteredActions();
+            var result = controller.GetRegisteredActions();
 
             // assert
             result.Should().BeOfType<OkNegotiatedContentResult<IBulkActionProvider[]>>();
@@ -240,14 +233,16 @@
         public void Run_BulkActionProviderStorage_InvokeGet()
         {
             // arrange
+            var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
+            var controller = BuildController(bulkActionProviderStorage);
             var provider = BuildProvider();
-            _bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
+            bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
 
             // act
-            _controller.Run(Mock.Of<TestBulkActionContext>());
+            controller.Run(Mock.Of<TestBulkActionContext>());
 
             // assert
-            _bulkActionProviderStorage.Verify(t => t.Get(It.IsAny<string>()), Times.Exactly(1));
+            bulkActionProviderStorage.Verify(t => t.Get(It.IsAny<string>()), Times.Exactly(1));
         }
 
         [Theory]
@@ -272,12 +267,15 @@
         public void Run_ShouldReturn_OkNegotiatedResult()
         {
             // arrange
+            var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
+            var securityHandlerFactory = new Mock<ISecurityHandlerFactory>();
+            var controller = BuildController(bulkActionProviderStorage, securityHandlerFactory);
             var provider = BuildProvider();
-            _bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
-            _securityHandlerFactory.Setup(t => t.Create(provider.Permissions)).Returns(Mock.Of<ISecurityHandler>());
+            bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
+            securityHandlerFactory.Setup(t => t.Create(provider.Permissions)).Returns(Mock.Of<ISecurityHandler>());
 
             // act
-            var result = _controller.Run(Mock.Of<TestBulkActionContext>());
+            var result = controller.Run(Mock.Of<TestBulkActionContext>());
 
             // assert
             result.Should().BeOfType<OkNegotiatedContentResult<BulkActionPushNotification>>();
@@ -287,13 +285,16 @@
         public void Run_ShouldReturn_UnauthorizedResult()
         {
             // arrange
+            var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
+            var securityHandlerFactory = new Mock<ISecurityHandlerFactory>();
+            var controller = BuildController(bulkActionProviderStorage, securityHandlerFactory);
             var provider = BuildProvider();
             provider.Permissions = new[] { "permission1" };
-            _bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
-            _securityHandlerFactory.Setup(t => t.Create(provider.Permissions)).Returns(Mock.Of<ISecurityHandler>());
+            bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
+            securityHandlerFactory.Setup(t => t.Create(provider.Permissions)).Returns(Mock.Of<ISecurityHandler>());
 
             // act
-            var result = _controller.Run(Mock.Of<TestBulkActionContext>());
+            var result = controller.Run(Mock.Of<TestBulkActionContext>());
 
             // assert
             result.Should().BeOfType<UnauthorizedResult>();
@@ -303,16 +304,20 @@
         public void Run_UserNameResolver_InvokeGetCurrentUserName()
         {
             // arrange
+            var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
+            var securityHandlerFactory = new Mock<ISecurityHandlerFactory>();
+            var userNameResolver = new Mock<IUserNameResolver>();
+            var controller = BuildController(bulkActionProviderStorage, securityHandlerFactory, userNameResolver);
             var provider = BuildProvider();
-            _bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
-            _securityHandlerFactory.Setup(t => t.Create(provider.Permissions)).Returns(Mock.Of<ISecurityHandler>());
-            _userNameResolver.Setup(t => t.GetCurrentUserName());
+            bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
+            securityHandlerFactory.Setup(t => t.Create(provider.Permissions)).Returns(Mock.Of<ISecurityHandler>());
+            userNameResolver.Setup(t => t.GetCurrentUserName());
 
             // act
-            _controller.Run(Mock.Of<TestBulkActionContext>());
+            controller.Run(Mock.Of<TestBulkActionContext>());
 
             // assert
-            _userNameResolver.Verify(t => t.GetCurrentUserName(), Times.Once);
+            userNameResolver.Verify(t => t.GetCurrentUserName(), Times.Once);
         }
 
         private static IBulkActionProvider BuildProvider()
@@ -326,6 +331,65 @@
                 MockBehavior.Loose);
 
             return provider;
+        }
+
+        private static BulkActionsController BuildController()
+        {
+            var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
+            var userNameResolver = new Mock<IUserNameResolver>();
+            var securityHandlerFactory = new Mock<ISecurityHandlerFactory>();
+            var backgroundExecutor = new Mock<IBackgroundJobExecutor>();
+            var controller = new BulkActionsController(
+                bulkActionProviderStorage.Object,
+                userNameResolver.Object,
+                securityHandlerFactory.Object,
+                backgroundExecutor.Object);
+
+            return controller;
+        }
+
+        private static BulkActionsController BuildController(IMock<IBulkActionProviderStorage> bulkActionProviderStorage)
+        {
+            var userNameResolver = new Mock<IUserNameResolver>();
+            var securityHandlerFactory = new Mock<ISecurityHandlerFactory>();
+            var backgroundExecutor = new Mock<IBackgroundJobExecutor>();
+            var controller = new BulkActionsController(
+                bulkActionProviderStorage.Object,
+                userNameResolver.Object,
+                securityHandlerFactory.Object,
+                backgroundExecutor.Object);
+
+            return controller;
+        }
+
+        private static BulkActionsController BuildController(
+            IMock<IBulkActionProviderStorage> bulkActionProviderStorage,
+            IMock<ISecurityHandlerFactory> securityHandlerFactory)
+        {
+            var userNameResolver = new Mock<IUserNameResolver>();
+            var backgroundExecutor = new Mock<IBackgroundJobExecutor>();
+            var controller = new BulkActionsController(
+                bulkActionProviderStorage.Object,
+                userNameResolver.Object,
+                securityHandlerFactory.Object,
+                backgroundExecutor.Object);
+
+            return controller;
+        }
+
+        private static BulkActionsController BuildController(
+            IMock<IBulkActionProviderStorage> bulkActionProviderStorage,
+            IMock<ISecurityHandlerFactory> securityHandlerFactory,
+            IMock<IUserNameResolver> userNameResolver)
+        {
+            var backgroundExecutor = new Mock<IBackgroundJobExecutor>();
+            var controller = new BulkActionsController(
+                bulkActionProviderStorage.Object,
+                userNameResolver.Object,
+                securityHandlerFactory.Object,
+                backgroundExecutor.Object);
+
+            return controller;
         }
     }
 }
