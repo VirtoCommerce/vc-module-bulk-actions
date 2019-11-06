@@ -42,6 +42,21 @@
         }
 
         [Fact]
+        public void Add_ShouldThrow_ArgumentException()
+        {
+            // arrange
+            var bulkActionProvider = Mock.Of<IBulkActionProvider>(t => t.Name == "test");
+            var actionProviderStorage = new BulkActionProviderStorage();
+            actionProviderStorage.Add(bulkActionProvider);
+
+            // act
+            var action = new Action(() => actionProviderStorage.Add(bulkActionProvider));
+
+            // assert
+            action.Should().Throw<ArgumentException>();
+        }
+
+        [Fact]
         public void Get_ShouldReturn_NotNull()
         {
             // arrange
