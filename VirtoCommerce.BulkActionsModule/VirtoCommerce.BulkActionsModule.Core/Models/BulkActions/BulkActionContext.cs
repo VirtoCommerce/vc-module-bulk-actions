@@ -8,7 +8,7 @@
         public string ActionName { get; set; }
 
         /// <summary>
-        /// The context type name.
+        /// Gets the context type name.
         /// </summary>
         public string ContextTypeName => GetType().Name;
     }

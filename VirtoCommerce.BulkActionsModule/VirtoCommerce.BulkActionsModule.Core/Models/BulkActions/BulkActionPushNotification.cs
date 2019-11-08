@@ -22,7 +22,7 @@
         }
 
         /// <summary>
-        /// The error count.
+        /// Gets error count.
         /// </summary>
         [JsonProperty("errorCount")]
         public long ErrorCount => Errors?.Count ?? 0;
