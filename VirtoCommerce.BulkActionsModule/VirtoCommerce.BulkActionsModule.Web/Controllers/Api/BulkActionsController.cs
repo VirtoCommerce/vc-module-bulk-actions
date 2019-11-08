@@ -100,9 +100,9 @@
         }
 
         /// <summary>
-        /// Gets the list of all registered actions
+        /// Gets the list of all registered actions.
         /// </summary>
-        /// <returns>The list of registered actions</returns>
+        /// <returns>The list of registered actions.</returns>
         [HttpGet]
         [Route]
         [ResponseType(typeof(BulkActionProvider[]))]
@@ -161,7 +161,7 @@
         /// The permissions.
         /// </param>
         /// <returns>
-        /// True if all checks are succeeded, otherwise false
+        /// True if all checks are succeeded, otherwise false.
         /// </returns>
         private bool IsAuthorizedUserHasPermissions(string[] permissions)
         {

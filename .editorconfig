@@ -317,3 +317,20 @@ dotnet_naming_symbols.all_items.applicable_accessibilities=*
 indent_style=space
 indent_size=4
 tab_width=4
+
+[*.cs]
+
+# SA1600: Elements should be documented
+dotnet_diagnostic.SA1600.severity = none
+
+# SA1633: File should have header
+dotnet_diagnostic.SA1633.severity = none
+
+# SA1309: Field names should not begin with underscore
+dotnet_diagnostic.SA1309.severity = none
+
+# SA1101: Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = none
+
+# SA1413: Use trailing comma in multi-line initializers
+dotnet_diagnostic.SA1413.severity = none
