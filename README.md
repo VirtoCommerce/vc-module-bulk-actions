@@ -7,9 +7,9 @@ _Bulk Actions Module_ – **BAM**
 
 ## BAM 
 
-This module contains the general logic of the bulk actions pipeline. 
-In the BAM core lays the logic of the template method. 
-The API of BAM provides 4 methods(endpoints) for working template method logic: 
+This module contains the general logics of the bulk actions pipeline. 
+[The BAM has the template method logics](https://en.wikipedia.org/wiki/Template_method_pattern).
+The API of BAM provides 4 methods(endpoints): 
 
 `GET /api/bulk/actions` - Gets the list of all registered actions 
 
@@ -17,10 +17,10 @@ The API of BAM provides 4 methods(endpoints) for working template method logic:
 
 `DELETE /api/bulk/actions` - Attempts to cancel running job. 
 
-`POST /api/bulk/actions/data` - Gets action initialization data (could be used to initialize UI) 
+`POST /api/bulk/actions/data` - Gets action initialization data (can be used for UI initialization) 
 
 
-Further, the BAM provides following interfaces for your custom implementations: 
+Further, the BAM provides the following interfaces for your custom implementations: 
 
 **IBulkAction** – provides methods that will be invoked by the BAM core.  
 
@@ -39,13 +39,13 @@ Further, the BAM provides following interfaces for your custom implementations:
  
 ## How to register your custom bulk actions module:
 
-For the beginning you should implement following interfaces: 
+For the beginning you should implement the following interfaces: 
 
 **IDataSourceFactory**, **IBulkActionFactory**  
 
-Eg let these ones be called: CustomDataSourceFactory, CustomBulkActionFactory. 
+Let's name them for instance: CustomDataSourceFactory, CustomBulkActionFactory. 
 
-Then, these implementations should be registered in IoC Unity container like that: 
+Then, these implementations should be registered in IoC Unity container as follows: 
 
 `_container.RegisterType<IDataSourceFactory, CustomDataSourceFactory>();` 
 
@@ -66,11 +66,11 @@ where
 
 **applicableTypes** – reserved. Not used yet. 
 
-**dataSourceFactory** - the factory for the creation of your DataSource. You can check the type of the passed context and create your own data source in accordance with your logic.
+**dataSourceFactory** - the factory for the creation of your DataSource. You can check the type of the passed context and create your own data source in accordance with your logics.
 
 **actionFactory** – the factory for the creation of your bulk action. Here you also can check the type of the passed context and create your bulk action.
 
-**permissions** – an array of strings with permission descriptions. These permissions will be checked by BAM for current authorized user. Permissions can be managed in admin UI.
+**permissions** – an array of strings with permission descriptions. These permissions will be checked by BAM for the current authorized user. Permissions can be managed in admin UI.
 
 Further, resolve your BulkActionProviderStorage and pass into it your bulk action provider instance:
 
