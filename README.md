@@ -30,11 +30,11 @@ Further, the BAM provides the following interfaces for your custom implementatio
 
 **IBulkActionFactory** – this factory will help you create your bulk action instance dynamically. 
 
-**IBulkActionProvider** - container to the encapsulation of all previously mentioned entities. You have to instantiate the BulkActionProvider and pass into it your implementations and other parameters. Further, this provider should be added into BulkActionStorage instance that is already implemented in BAM. 
+**IBulkActionProvider** - container for encapsulation of all previously mentioned entities. You have to instantiate your version of the BulkActionProvider and add into the BulkActionStorage instance that is already implemented in BAM.
 
 **IBulkActionStorage** - should be resolved in your custom module via Ioc for registration of custom providers. 
 
-**IBulkActionExecutor** – implemented in the BAM (named BulkActionExecutor). If you needed it can be overriden. 
+**IBulkActionExecutor** – implemented in the BAM (named BulkActionExecutor). It also can be overriden in your code.
 
  
 ## How to register your custom bulk actions module:
