@@ -17,7 +17,7 @@
     public class BulkActionsExecutorTests
     {
         [Fact]
-        public void Execute_ShouldInvokeMethod_Fetch()
+        public void Execute_PagedDataSource_InvokeFetch()
         {
             // arrange
             var succeeded = true;
@@ -50,7 +50,7 @@
         }
 
         [Fact]
-        public void Execute_ShouldInvokeMethod_ThrowIfCancellationRequested()
+        public void Execute_CancellationToken_InvokeThrowIfCancellationRequested()
         {
             // arrange
             var bulkAction = Mock.Of<IBulkAction>();
@@ -78,7 +78,7 @@
         }
 
         [Fact]
-        public void Execute_ShouldThrow_ArgumentNullException()
+        public void Execute_NullableArgs_ThrowArgumentNullException()
         {
             // arrange
             var cancellationToken = Mock.Of<ICancellationToken>();

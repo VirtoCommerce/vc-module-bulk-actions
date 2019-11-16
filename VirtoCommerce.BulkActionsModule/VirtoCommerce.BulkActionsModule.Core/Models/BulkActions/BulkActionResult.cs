@@ -13,7 +13,7 @@
         }
 
         /// <summary>
-        /// The success.
+        /// Gets the success.
         /// </summary>
         public static BulkActionResult Success => new BulkActionResult { Succeeded = true };
 

@@ -21,6 +21,8 @@
     [RoutePrefix("api/bulk/actions")]
     public class BulkActionsController : ApiController
     {
+        private readonly IBackgroundJobExecutor _backgroundJobExecutor;
+
         private readonly IBulkActionProviderStorage _bulkActionProviderStorage;
 
         private readonly ISecurityHandlerFactory _securityHandlerFactory;
@@ -39,14 +41,19 @@
         /// <param name="securityHandlerFactory">
         /// The security handler factory.
         /// </param>
+        /// <param name="backgroundJobExecutor">
+        /// The background job executor.
+        /// </param>
         public BulkActionsController(
             IBulkActionProviderStorage bulkActionProviderStorage,
             IUserNameResolver userNameResolver,
-            ISecurityHandlerFactory securityHandlerFactory)
+            ISecurityHandlerFactory securityHandlerFactory,
+            IBackgroundJobExecutor backgroundJobExecutor)
         {
             _bulkActionProviderStorage = bulkActionProviderStorage;
             _userNameResolver = userNameResolver;
             _securityHandlerFactory = securityHandlerFactory;
+            _backgroundJobExecutor = backgroundJobExecutor;
         }
 
         /// <summary>
@@ -63,7 +70,7 @@
         [CheckPermission(Permission = BulkActionPredefinedPermissions.Execute)]
         public IHttpActionResult Cancel(string jobId)
         {
-            BackgroundJob.Delete(jobId);
+            _backgroundJobExecutor.Delete(jobId);
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -77,10 +84,7 @@
         [CheckPermission(Permission = BulkActionPredefinedPermissions.Read)]
         public IHttpActionResult GetActionData([FromBody] BulkActionContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
+            ValidateContext(context);
 
             var actionProvider = _bulkActionProviderStorage.Get(context.ActionName);
 
@@ -96,9 +100,9 @@
         }
 
         /// <summary>
-        /// Gets the list of all registered actions
+        /// Gets the list of all registered actions.
         /// </summary>
-        /// <returns>The list of registered actions</returns>
+        /// <returns>The list of registered actions.</returns>
         [HttpGet]
         [Route]
         [ResponseType(typeof(BulkActionProvider[]))]
@@ -120,10 +124,7 @@
         [ResponseType(typeof(BulkActionPushNotification))]
         public IHttpActionResult Run([FromBody] BulkActionContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
+            ValidateContext(context);
 
             var actionProvider = _bulkActionProviderStorage.Get(context.ActionName);
 
@@ -136,13 +137,21 @@
                     Description = "Starting…"
                 };
 
-                notification.JobId = BackgroundJob.Enqueue<BulkActionJob>(
+                notification.JobId = _backgroundJobExecutor.Enqueue<BulkActionJob>(
                     job => job.Execute(context, notification, JobCancellationToken.Null, null));
 
                 return Ok(notification);
             }
 
             return Unauthorized();
+        }
+
+        private static void ValidateContext(BulkActionContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
         }
 
         /// <summary>
@@ -152,7 +161,7 @@
         /// The permissions.
         /// </param>
         /// <returns>
-        /// True if all checks are succeeded, otherwise false
+        /// True if all checks are succeeded, otherwise false.
         /// </returns>
         private bool IsAuthorizedUserHasPermissions(string[] permissions)
         {
@@ -161,7 +170,11 @@
             if (!permissions.IsNullOrEmpty())
             {
                 var securityHandler = _securityHandlerFactory.Create(permissions);
-                handlers.Add(securityHandler);
+
+                if (securityHandler != null)
+                {
+                    handlers.Add(securityHandler);
+                }
             }
             else
             {

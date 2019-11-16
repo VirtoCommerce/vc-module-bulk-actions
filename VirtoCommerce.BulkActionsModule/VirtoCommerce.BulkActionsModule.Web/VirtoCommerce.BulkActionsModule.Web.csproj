@@ -35,7 +35,8 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\VirtoCommerce.BulkActionsModule.Web.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,6 +46,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\VirtoCommerce.BulkActionsModule.Web.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CacheManager.Core, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -141,7 +143,9 @@
     <Content Include="Scripts\module.js" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackgroundJobs\BackgroundJobExecutor.cs" />
     <Compile Include="BackgroundJobs\BulkActionJob.cs" />
+    <Compile Include="BackgroundJobs\IBackgroundJobExecutor.cs" />
     <Compile Include="BackgroundJobs\JobCancellationTokenWrapper.cs" />
     <Compile Include="Controllers\Api\BulkActionsController.cs" />
     <Compile Include="JsonConverters\BulkActionContextJsonConverter.cs" />
@@ -160,6 +164,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\blades\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -42,7 +42,7 @@
         }
 
         /// <summary>
-        /// Gets or sets the entity types to which action could be applied: Category, Product, … 
+        /// Gets or sets the entity types to which action could be applied: Category, Product, ….
         /// </summary>
         public string[] ApplicableTypes { get; set; }
 
