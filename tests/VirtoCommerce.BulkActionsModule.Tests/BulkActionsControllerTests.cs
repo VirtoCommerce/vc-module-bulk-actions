@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,13 +46,12 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             var result = controller.Cancel(string.Empty);
 
             // assert
-            result.Should().BeOfType<StatusCodeResult>();
+            result.Should().BeOfType<NoContentResult>();
         }
 
         [Theory]
         [InlineData(typeof(HttpDeleteAttribute))]
         [InlineData(typeof(AuthorizeAttribute))]
-        [InlineData(typeof(RouteAttribute))]
         public void Cancel_CheckAttribute_ShouldBeMarkedAttribute(Type attributeType)
         {
             // arrange
@@ -68,7 +69,6 @@ namespace VirtoCommerce.BulkActionsModule.Tests
         [Theory]
         [InlineData(typeof(HttpGetAttribute))]
         [InlineData(typeof(AuthorizeAttribute))]
-        [InlineData(typeof(RouteAttribute))]
         public void GeRegisteredActions_CheckAttribute_ShouldBeMarkedAttribute(Type attributeType)
         {
             // arrange
@@ -86,7 +86,6 @@ namespace VirtoCommerce.BulkActionsModule.Tests
         [Theory]
         [InlineData(typeof(HttpPostAttribute))]
         [InlineData(typeof(AuthorizeAttribute))]
-        [InlineData(typeof(RouteAttribute))]
         public void GetActionData_CheckAttribute_ShouldBeMarkedAttribute(Type attributeType)
         {
             // arrange
@@ -108,10 +107,9 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             var controller = BuildController();
 
             // act
-            var action = new Action(
-                () =>
+            var action = new Action(() =>
                 {
-                    controller.GetActionData(null);
+                    controller.GetActionData(null).GetAwaiter().GetResult();
                 });
 
             // assert
@@ -119,60 +117,72 @@ namespace VirtoCommerce.BulkActionsModule.Tests
         }
 
         [Fact]
-        public void GetActionsData_BulkActionFactory_InvokeCreate()
+        public async Task GetActionsData_BulkActionFactory_InvokeCreate()
         {
             // arrange
             var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
-            var controller = BuildController(bulkActionProviderStorage);
+            var authorizationService = new Mock<IAuthorizationService>();
+            var controller = BuildController(bulkActionProviderStorage, authorizationService);
             var provider = BuildProvider();
             bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
             var mock = Mock.Get(provider.BulkActionFactory);
+            authorizationService.Setup(t =>
+                    t.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<IEnumerable<IAuthorizationRequirement>>()))
+                .ReturnsAsync(AuthorizationResult.Success);
 
             // act
-            controller.GetActionData(Mock.Of<TestBulkActionContext>());
+            await controller.GetActionData(Mock.Of<TestBulkActionContext>());
 
             // assert
             mock.Verify(t => t.Create(It.IsAny<BulkActionContext>()), Times.Exactly(1));
         }
 
         [Fact]
-        public void GetActionsData_BulkActionProviderStorage_InvokeGet()
+        public async Task GetActionsData_BulkActionProviderStorage_InvokeGet()
         {
             // arrange
             var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
-            var controller = BuildController(bulkActionProviderStorage);
+            var authorizationService = new Mock<IAuthorizationService>();
+            var controller = BuildController(bulkActionProviderStorage, authorizationService);
             var provider = BuildProvider();
             bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
+            authorizationService.Setup(t =>
+                    t.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<IEnumerable<IAuthorizationRequirement>>()))
+                .ReturnsAsync(AuthorizationResult.Success);
 
             // act
-            controller.GetActionData(Mock.Of<TestBulkActionContext>());
+            await controller.GetActionData(Mock.Of<TestBulkActionContext>());
 
             // assert
             bulkActionProviderStorage.Verify(t => t.Get(It.IsAny<string>()), Times.Exactly(1));
         }
 
         [Fact]
-        public void GetActionsData_BulkAction_InvokeGetActionData()
+        public async Task GetActionsData_BulkAction_InvokeGetActionData()
         {
             // arrange
             var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
-            var controller = BuildController(bulkActionProviderStorage);
+            var authorizationService = new Mock<IAuthorizationService>();
+            var controller = BuildController(bulkActionProviderStorage, authorizationService);
             var provider = BuildProvider();
             bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
             var mock = Mock.Get(provider.BulkActionFactory);
             var bulkActionMock = Mock.Get(Mock.Of<IBulkAction>());
             bulkActionMock.Setup(t => t.GetActionData());
             mock.Setup(t => t.Create(It.IsAny<BulkActionContext>())).Returns(bulkActionMock.Object);
+            authorizationService.Setup(t =>
+                    t.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<IEnumerable<IAuthorizationRequirement>>()))
+                .ReturnsAsync(AuthorizationResult.Success);
 
             // act
-            controller.GetActionData(Mock.Of<TestBulkActionContext>());
+            await controller.GetActionData(Mock.Of<TestBulkActionContext>());
 
             // assert
             bulkActionMock.Verify(t => t.GetActionData(), Times.Exactly(1));
         }
 
         [Fact]
-        public void GetActionsData_authorizationService_InvokeCreate()
+        public async Task GetActionsData_authorizationService_InvokeCreate()
         {
             // arrange
             var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
@@ -182,19 +192,19 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             provider.Permissions = new[] { "permission1" };
             bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
             authorizationService.Setup(t =>
-                    t.AuthorizeAsync(ClaimsPrincipal.Current, It.IsAny<object>(), new BulkActionsAuthorizationRequirement("permission1")))
-                .ReturnsAsync(Mock.Of<AuthorizationResult>());
+                    t.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<IEnumerable<IAuthorizationRequirement>>()))
+                .ReturnsAsync(AuthorizationResult.Failed());
 
             // act
-            controller.GetActionData(Mock.Of<TestBulkActionContext>());
+            await controller.GetActionData(Mock.Of<TestBulkActionContext>());
 
             // assert
             authorizationService.Verify(t =>
-                t.AuthorizeAsync(ClaimsPrincipal.Current, It.IsAny<object>(), new BulkActionsAuthorizationRequirement(It.IsAny<string>())), Times.Exactly(1));
+                t.AuthorizeAsync(ClaimsPrincipal.Current, It.IsAny<object>(), It.IsAny<IEnumerable<IAuthorizationRequirement>>()), Times.Exactly(1));
         }
 
         [Fact]
-        public void GetActionsData_AuthorizationFail_UnauthorizedResult()
+        public async Task GetActionsData_AuthorizationFail_UnauthorizedResultAsync()
         {
             // arrange
             var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
@@ -204,11 +214,11 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             provider.Permissions = new[] { "permission1" };
             bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
             authorizationService.Setup(t =>
-                    t.AuthorizeAsync(ClaimsPrincipal.Current, It.IsAny<object>(), new BulkActionsAuthorizationRequirement("permission1")))
-                .ReturnsAsync(Mock.Of<AuthorizationResult>());
+                    t.AuthorizeAsync(It.IsAny<ClaimsPrincipal>(), It.IsAny<object>(), It.IsAny<IEnumerable<IAuthorizationRequirement>>()))
+                .ReturnsAsync(AuthorizationResult.Failed());
 
             // act
-            var result = controller.GetActionData(Mock.Of<TestBulkActionContext>());
+            var result = await controller.GetActionData(Mock.Of<TestBulkActionContext>());
 
             // assert
             result.Should().BeOfType<UnauthorizedResult>();
@@ -246,7 +256,6 @@ namespace VirtoCommerce.BulkActionsModule.Tests
         [Theory]
         [InlineData(typeof(HttpPostAttribute))]
         [InlineData(typeof(AuthorizeAttribute))]
-        [InlineData(typeof(RouteAttribute))]
         public void Run_CheckAttribute_ShouldBeMarkedAttribute(Type attributeType)
         {
             // arrange
@@ -262,7 +271,7 @@ namespace VirtoCommerce.BulkActionsModule.Tests
         }
 
         [Fact]
-        public void Run_ShouldReturn_OkNegotiatedResult()
+        public async Task Run_ShouldReturn_OkNegotiatedResult()
         {
             // arrange
             var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
@@ -271,18 +280,18 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             var provider = BuildProvider();
             bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
             authorizationService.Setup(t =>
-                    t.AuthorizeAsync(ClaimsPrincipal.Current, It.IsAny<object>(), new BulkActionsAuthorizationRequirement("")))
-                .ReturnsAsync(Mock.Of<AuthorizationResult>());
+                    t.AuthorizeAsync(ClaimsPrincipal.Current, It.IsAny<object>(), It.IsAny<IEnumerable<IAuthorizationRequirement>>()))
+                .ReturnsAsync(AuthorizationResult.Success);
 
             // act
-            var result = controller.Run(Mock.Of<TestBulkActionContext>());
+            var result = await controller.Run(Mock.Of<TestBulkActionContext>());
 
             // assert
             result.Should().BeOfType<ActionResult<BulkActionPushNotification>>();
         }
 
         [Fact]
-        public void Run_ShouldReturn_UnauthorizedResult()
+        public async Task Run_ShouldReturn_UnauthorizedResult()
         {
             // arrange
             var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
@@ -292,18 +301,18 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             provider.Permissions = new[] { "permission1" };
             bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
             authorizationService.Setup(t =>
-                    t.AuthorizeAsync(ClaimsPrincipal.Current, It.IsAny<object>(), new BulkActionsAuthorizationRequirement("permission1")))
-                .ReturnsAsync(Mock.Of<AuthorizationResult>());
+                    t.AuthorizeAsync(ClaimsPrincipal.Current, It.IsAny<object>(), It.IsAny<IEnumerable<IAuthorizationRequirement>>()))
+                .ReturnsAsync(AuthorizationResult.Failed());
 
             // act
-            var result = controller.Run(Mock.Of<TestBulkActionContext>());
+            var result = await controller.Run(Mock.Of<TestBulkActionContext>());
 
             // assert
-            result.Should().BeOfType<UnauthorizedResult>();
+            result.Result.Should().BeOfType<UnauthorizedResult>();
         }
 
         [Fact]
-        public void Run_UserNameResolver_InvokeGetCurrentUserName()
+        public async Task Run_UserNameResolver_InvokeGetCurrentUserName()
         {
             // arrange
             var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
@@ -313,12 +322,12 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             var provider = BuildProvider();
             bulkActionProviderStorage.Setup(t => t.Get(It.IsAny<string>())).Returns(provider);
             authorizationService.Setup(t =>
-                    t.AuthorizeAsync(ClaimsPrincipal.Current, It.IsAny<object>(), new BulkActionsAuthorizationRequirement("permission1")))
-                .ReturnsAsync(Mock.Of<AuthorizationResult>());
+                    t.AuthorizeAsync(ClaimsPrincipal.Current, It.IsAny<object>(), It.IsAny<IEnumerable<IAuthorizationRequirement>>()))
+                .ReturnsAsync(AuthorizationResult.Success);
             userNameResolver.Setup(t => t.GetCurrentUserName());
 
             // act
-            controller.Run(Mock.Of<TestBulkActionContext>());
+            await controller.Run(Mock.Of<TestBulkActionContext>());
 
             // assert
             userNameResolver.Verify(t => t.GetCurrentUserName(), Times.Once);

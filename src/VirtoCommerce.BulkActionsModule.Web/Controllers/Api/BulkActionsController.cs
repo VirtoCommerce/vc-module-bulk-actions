@@ -102,7 +102,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
         /// <returns>The list of registered actions.</returns>
         [HttpGet]
         [Authorize(ModuleConstants.Security.Permissions.Read)]
-        public ActionResult<BulkActionProvider[]> GetRegisteredActions()
+        public ActionResult<IBulkActionProvider[]> GetRegisteredActions()
         {
             var allActions = _bulkActionProviderStorage.GetAll();
             return Ok(allActions.ToArray());
