@@ -1,4 +1,6 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Tests
+using VirtoCommerce.BulkActionsModule.Core.Services;
+
+namespace VirtoCommerce.BulkActionsModule.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +9,6 @@
 
     using Moq;
 
-    using VirtoCommerce.BulkActionsModule.Core;
     using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
     using VirtoCommerce.BulkActionsModule.Data.Services;
     using VirtoCommerce.Platform.Core.Common;

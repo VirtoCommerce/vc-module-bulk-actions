@@ -1,4 +1,6 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Core.Models.BulkActions
+using VirtoCommerce.BulkActionsModule.Core.Services;
+
+namespace VirtoCommerce.BulkActionsModule.Core.Models.BulkActions
 {
     using Newtonsoft.Json;
 

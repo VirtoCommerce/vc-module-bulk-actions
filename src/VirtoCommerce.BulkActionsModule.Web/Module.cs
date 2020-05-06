@@ -1,50 +1,43 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Web
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using VirtoCommerce.BulkActionsModule.Core;
+using VirtoCommerce.BulkActionsModule.Core.Services;
+using VirtoCommerce.BulkActionsModule.Data.Services;
+using VirtoCommerce.BulkActionsModule.Web.Authorization;
+using VirtoCommerce.BulkActionsModule.Web.BackgroundJobs;
+using VirtoCommerce.BulkActionsModule.Web.JsonConverters;
+using VirtoCommerce.Platform.Core.Modularity;
+using VirtoCommerce.Platform.Core.Security;
+
+namespace VirtoCommerce.BulkActionsModule.Web
 {
-    using System.Web.Http;
-
-    using Hangfire.Common;
-
-    using Microsoft.Practices.Unity;
-
-    using VirtoCommerce.BulkActionsModule.Core;
-    using VirtoCommerce.BulkActionsModule.Data.Security;
-    using VirtoCommerce.BulkActionsModule.Data.Services;
-    using VirtoCommerce.BulkActionsModule.Web.BackgroundJobs;
-    using VirtoCommerce.BulkActionsModule.Web.JsonConverters;
-    using VirtoCommerce.Platform.Core.Modularity;
-
-    public class Module : ModuleBase
+    public class Module : IModule
     {
-        private readonly IUnityContainer _container;
+        public ManifestModuleInfo ModuleInfo { get; set; }
 
-        public Module(IUnityContainer container)
+        public void Initialize(IServiceCollection serviceCollection)
         {
-            _container = container;
+            serviceCollection.AddSingleton<IBulkActionProviderStorage>(new BulkActionProviderStorage());
+            serviceCollection.AddTransient<IBulkActionExecutor, BulkActionExecutor>();
+            serviceCollection.AddTransient<IAuthorizationHandler, BulkActionsAuthorizationHandler>();
+            serviceCollection.AddTransient<IBackgroundJobExecutor, BackgroundJobExecutor>();
         }
 
-        public override void Initialize()
+        public void PostInitialize(IApplicationBuilder appBuilder)
         {
-            base.Initialize();
+            var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
+            permissionsProvider.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x => new Permission() { GroupName = "BulkActions", Name = x }).ToArray());
 
-            // to shared module
-            _container.RegisterInstance<IBulkActionProviderStorage>(new BulkActionProviderStorage());
-            _container.RegisterType<IBulkActionExecutor, BulkActionExecutor>();
-            _container.RegisterType<ISecurityHandlerFactory, SecurityHandlerFactory>();
-            _container.RegisterType<IBackgroundJobExecutor, BackgroundJobExecutor>();
+            var mvcJsonOptions = appBuilder.ApplicationServices.GetService<IOptions<MvcNewtonsoftJsonOptions>>();
+            mvcJsonOptions.Value.SerializerSettings.Converters.Add(new BulkActionContextJsonConverter());
         }
 
-        public override void PostInitialize()
+        public void Uninstall()
         {
-            base.PostInitialize();
-            var httpConfiguration = _container.Resolve<HttpConfiguration>();
-            JobHelper.SetSerializerSettings(httpConfiguration.Formatters.JsonFormatter.SerializerSettings);
-            var converter = new BulkActionContextJsonConverter();
-            httpConfiguration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(converter);
-        }
-
-        public override void SetupDatabase()
-        {
-            // idle
         }
     }
 }

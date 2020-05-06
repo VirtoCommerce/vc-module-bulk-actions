@@ -1,4 +1,4 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Core
+namespace VirtoCommerce.BulkActionsModule.Core.Services
 {
     public interface IBulkActionProvider
     {

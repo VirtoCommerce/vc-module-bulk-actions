@@ -1,9 +1,8 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Core
+using System.Collections.Generic;
+using VirtoCommerce.Platform.Core.Common;
+
+namespace VirtoCommerce.BulkActionsModule.Core.Services
 {
-    using System.Collections.Generic;
-
-    using VirtoCommerce.Platform.Core.Common;
-
     public interface IDataSource
     {
         IEnumerable<IEntity> Items { get; }

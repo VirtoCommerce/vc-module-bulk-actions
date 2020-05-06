@@ -1,12 +1,11 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Data.Services
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using VirtoCommerce.BulkActionsModule.Core.Services;
+
+namespace VirtoCommerce.BulkActionsModule.Data.Services
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using VirtoCommerce.BulkActionsModule.Core;
-
     public class BulkActionProviderStorage : IBulkActionProviderStorage
     {
         private const string StorageName = nameof(BulkActionProviderStorage);

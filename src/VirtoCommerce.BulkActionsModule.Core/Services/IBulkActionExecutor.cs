@@ -1,10 +1,9 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Core
+using System;
+using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
+using VirtoCommerce.Platform.Core.Common;
+
+namespace VirtoCommerce.BulkActionsModule.Core.Services
 {
-    using System;
-
-    using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
-    using VirtoCommerce.Platform.Core.Common;
-
     public interface IBulkActionExecutor
     {
         void Execute(

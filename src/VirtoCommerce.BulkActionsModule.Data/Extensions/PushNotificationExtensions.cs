@@ -1,7 +1,7 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Data.Extensions
-{
-    using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
+using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
 
+namespace VirtoCommerce.BulkActionsModule.Data.Extensions
+{
     public static class PushNotificationExtensions
     {
         public static void Patch(this BulkActionPushNotification target, BulkActionProgressContext source)

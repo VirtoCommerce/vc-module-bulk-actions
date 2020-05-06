@@ -1,16 +1,15 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Web.BackgroundJobs
+using System;
+using System.Threading.Tasks;
+using Hangfire;
+using Hangfire.Server;
+using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
+using VirtoCommerce.BulkActionsModule.Core.Services;
+using VirtoCommerce.BulkActionsModule.Data.Extensions;
+using VirtoCommerce.Platform.Core.Exceptions;
+using VirtoCommerce.Platform.Core.PushNotifications;
+
+namespace VirtoCommerce.BulkActionsModule.Web.BackgroundJobs
 {
-    using System;
-
-    using Hangfire;
-    using Hangfire.Server;
-
-    using VirtoCommerce.BulkActionsModule.Core;
-    using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
-    using VirtoCommerce.BulkActionsModule.Data.Extensions;
-    using VirtoCommerce.Platform.Core.PushNotifications;
-    using VirtoCommerce.Platform.Data.Common;
-
     public class BulkActionJob
     {
         private readonly IBulkActionExecutor _bulkActionExecutor;
@@ -50,7 +49,7 @@
                     {
                         notification.Patch(context);
                         notification.JobId = performContext.BackgroundJob.Id;
-                        _pushNotificationManager.Upsert(notification);
+                        _pushNotificationManager.Send(notification);
                     },
                     tokenWrapper);
             }
@@ -66,7 +65,7 @@
             {
                 notification.Description = "Job finished";
                 notification.Finished = DateTime.UtcNow;
-                _pushNotificationManager.Upsert(notification);
+                _pushNotificationManager.Send(notification);
             }
         }
 

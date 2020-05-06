@@ -1,2 +1,6 @@
 {
+  "permissions": {
+    "bulk-actions:execute": "Execute",
+    "bulk-actions:read": "Read"
+  }
 }

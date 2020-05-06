@@ -1,4 +1,6 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Tests
+using VirtoCommerce.BulkActionsModule.Core.Services;
+
+namespace VirtoCommerce.BulkActionsModule.Tests
 {
     using System;
 

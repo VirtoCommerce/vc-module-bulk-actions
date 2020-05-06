@@ -1,85 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EA5ADCFB-BFBD-4131-8666-B4BA90F4DE58}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VirtoCommerce.BulkActionsModule.Core</RootNamespace>
-    <AssemblyName>VirtoCommerce.BulkActionsModule.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>True</IsPackable>
+    <noWarn>1591</noWarn>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>
-    </NoWarn>
-    <DocumentationFile>bin\Debug\VirtoCommerce.BulkActionsModule.Core.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\VirtoCommerce.BulkActionsModule.Core.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1705;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Omu.ValueInjecter, Version=2.3.3.0, Culture=neutral, PublicKeyToken=c7694541b0ac80e4, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\valueinjecter.2.3.3\lib\net35\Omu.ValueInjecter.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="VirtoCommerce.Domain, Version=2.25.21.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\VirtoCommerce.Domain.2.25.21\lib\net461\VirtoCommerce.Domain.dll</HintPath>
-    </Reference>
-    <Reference Include="VirtoCommerce.Platform.Core, Version=2.13.44.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\VirtoCommerce.Platform.Core.2.13.44\lib\net461\VirtoCommerce.Platform.Core.dll</HintPath>
-    </Reference>
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.0.0-rc5" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="IBulkAction.cs" />
-    <Compile Include="IBulkActionExecutor.cs" />
-    <Compile Include="IBulkActionFactory.cs" />
-    <Compile Include="IBulkActionProvider.cs" />
-    <Compile Include="IBulkActionProviderStorage.cs" />
-    <Compile Include="Models\BulkActions\BulkActionContext.cs" />
-    <Compile Include="Models\BulkActions\BulkActionProvider.cs" />
-    <Compile Include="Models\BulkActions\BulkActionProgressContext.cs" />
-    <Compile Include="Models\BulkActions\BulkActionPushNotification.cs" />
-    <Compile Include="Models\BulkActions\BulkActionResult.cs" />
-    <Compile Include="BulkActionPredefinedPermissions.cs" />
-    <Compile Include="IDataSource.cs" />
-    <Compile Include="IDataSourceFactory.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\ISecurityHandler.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

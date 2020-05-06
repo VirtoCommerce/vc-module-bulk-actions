@@ -1,33 +1,29 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using Hangfire;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using VirtoCommerce.BulkActionsModule.Core;
+using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
+using VirtoCommerce.BulkActionsModule.Core.Services;
+using VirtoCommerce.BulkActionsModule.Data.Authorization;
+using VirtoCommerce.BulkActionsModule.Web.BackgroundJobs;
+using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Security;
+
+namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Web.Http;
-    using System.Web.Http.Description;
-
-    using Hangfire;
-
-    using VirtoCommerce.BulkActionsModule.Core;
-    using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
-    using VirtoCommerce.BulkActionsModule.Core.Security;
-    using VirtoCommerce.BulkActionsModule.Data.Security;
-    using VirtoCommerce.BulkActionsModule.Web.BackgroundJobs;
-    using VirtoCommerce.Platform.Core.Common;
-    using VirtoCommerce.Platform.Core.Security;
-    using VirtoCommerce.Platform.Core.Web.Security;
-
-    [RoutePrefix("api/bulk/actions")]
-    public class BulkActionsController : ApiController
+    [Authorize]
+    [Route("api/bulk/actions")]
+    public class BulkActionsController : Controller
     {
         private readonly IBackgroundJobExecutor _backgroundJobExecutor;
-
         private readonly IBulkActionProviderStorage _bulkActionProviderStorage;
-
-        private readonly ISecurityHandlerFactory _securityHandlerFactory;
-
         private readonly IUserNameResolver _userNameResolver;
+        private readonly IAuthorizationService _authorizationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BulkActionsController"/> class.
@@ -47,13 +43,13 @@
         public BulkActionsController(
             IBulkActionProviderStorage bulkActionProviderStorage,
             IUserNameResolver userNameResolver,
-            ISecurityHandlerFactory securityHandlerFactory,
-            IBackgroundJobExecutor backgroundJobExecutor)
+            IBackgroundJobExecutor backgroundJobExecutor,
+            IAuthorizationService authorizationService)
         {
             _bulkActionProviderStorage = bulkActionProviderStorage;
             _userNameResolver = userNameResolver;
-            _securityHandlerFactory = securityHandlerFactory;
             _backgroundJobExecutor = backgroundJobExecutor;
+            _authorizationService = authorizationService;
         }
 
         /// <summary>
@@ -66,12 +62,11 @@
         /// The <see cref="IHttpActionResult"/>.
         /// </returns>
         [HttpDelete]
-        [Route]
-        [CheckPermission(Permission = BulkActionPredefinedPermissions.Execute)]
-        public IHttpActionResult Cancel(string jobId)
+        [Authorize(ModuleConstants.Security.Permissions.Execute)]
+        public ActionResult Cancel(string jobId)
         {
             _backgroundJobExecutor.Delete(jobId);
-            return StatusCode(HttpStatusCode.NoContent);
+            return NoContent();
         }
 
         /// <summary>
@@ -81,22 +76,24 @@
         /// <returns>Initialization data for the given context.</returns>
         [HttpPost]
         [Route("data")]
-        [CheckPermission(Permission = BulkActionPredefinedPermissions.Read)]
-        public IHttpActionResult GetActionData([FromBody] BulkActionContext context)
+        [Authorize(ModuleConstants.Security.Permissions.Read)]
+        public async Task<ActionResult> GetActionData([FromBody] BulkActionContext context)
         {
             ValidateContext(context);
 
             var actionProvider = _bulkActionProviderStorage.Get(context.ActionName);
 
-            if (IsAuthorizedUserHasPermissions(actionProvider.Permissions))
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, context, new BulkActionsAuthorizationRequirement(ModuleConstants.Security.Permissions.Read));
+            if (!authorizationResult.Succeeded)
             {
-                var factory = actionProvider.BulkActionFactory;
-                var action = factory.Create(context);
-                var actionData = action.GetActionData();
-                return Ok(actionData);
+                return Unauthorized();
             }
 
-            return Unauthorized();
+            var factory = actionProvider.BulkActionFactory;
+            var action = factory.Create(context);
+            var actionData = action.GetActionData();
+
+            return Ok(actionData);
         }
 
         /// <summary>
@@ -104,10 +101,8 @@
         /// </summary>
         /// <returns>The list of registered actions.</returns>
         [HttpGet]
-        [Route]
-        [ResponseType(typeof(BulkActionProvider[]))]
-        [CheckPermission(Permission = BulkActionPredefinedPermissions.Read)]
-        public IHttpActionResult GetRegisteredActions()
+        [Authorize(ModuleConstants.Security.Permissions.Read)]
+        public ActionResult<BulkActionProvider[]> GetRegisteredActions()
         {
             var allActions = _bulkActionProviderStorage.GetAll();
             return Ok(allActions.ToArray());
@@ -119,31 +114,29 @@
         /// <param name="context">Execution context.</param>
         /// <returns>Notification with job id.</returns>
         [HttpPost]
-        [Route]
-        [CheckPermission(Permission = BulkActionPredefinedPermissions.Execute)]
-        [ResponseType(typeof(BulkActionPushNotification))]
-        public IHttpActionResult Run([FromBody] BulkActionContext context)
+        [Authorize(ModuleConstants.Security.Permissions.Execute)]
+        public async Task<ActionResult<BulkActionPushNotification>> Run([FromBody] BulkActionContext context)
         {
             ValidateContext(context);
 
             var actionProvider = _bulkActionProviderStorage.Get(context.ActionName);
 
-            if (IsAuthorizedUserHasPermissions(actionProvider.Permissions))
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, context, new BulkActionsAuthorizationRequirement(ModuleConstants.Security.Permissions.Read));
+            if (!authorizationResult.Succeeded)
             {
-                var creator = _userNameResolver.GetCurrentUserName();
-                var notification = new BulkActionPushNotification(creator)
-                {
-                    Title = $"{context.ActionName}",
-                    Description = "Starting…"
-                };
-
-                notification.JobId = _backgroundJobExecutor.Enqueue<BulkActionJob>(
-                    job => job.Execute(context, notification, JobCancellationToken.Null, null));
-
-                return Ok(notification);
+                return Unauthorized();
             }
 
-            return Unauthorized();
+            var creator = _userNameResolver.GetCurrentUserName();
+            var notification = new BulkActionPushNotification(creator)
+            {
+                Title = $"{context.ActionName}",
+                Description = "Starting…"
+            };
+
+            notification.JobId = _backgroundJobExecutor.Enqueue<BulkActionJob>(job => job.Execute(context, notification, JobCancellationToken.Null, null));
+
+            return Ok(notification);
         }
 
         private static void ValidateContext(BulkActionContext context)
@@ -152,36 +145,6 @@
             {
                 throw new ArgumentNullException(nameof(context));
             }
-        }
-
-        /// <summary>
-        /// Performs all security handlers checks, and returns true if all are succeeded.
-        /// </summary>
-        /// <param name="permissions">
-        /// The permissions.
-        /// </param>
-        /// <returns>
-        /// True if all checks are succeeded, otherwise false.
-        /// </returns>
-        private bool IsAuthorizedUserHasPermissions(string[] permissions)
-        {
-            var handlers = new List<ISecurityHandler>();
-
-            if (!permissions.IsNullOrEmpty())
-            {
-                var securityHandler = _securityHandlerFactory.Create(permissions);
-
-                if (securityHandler != null)
-                {
-                    handlers.Add(securityHandler);
-                }
-            }
-            else
-            {
-                // idle
-            }
-
-            return handlers.All(handler => handler.Authorize(User.Identity.Name));
         }
     }
 }

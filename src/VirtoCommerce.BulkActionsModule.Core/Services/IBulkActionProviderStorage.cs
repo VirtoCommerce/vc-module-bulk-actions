@@ -1,7 +1,7 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Core
-{
-    using System.Collections.Generic;
+using System.Collections.Generic;
 
+namespace VirtoCommerce.BulkActionsModule.Core.Services
+{
     public interface IBulkActionProviderStorage
     {
         IBulkActionProvider Add(IBulkActionProvider provider);
