@@ -83,7 +83,8 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
 
             var actionProvider = _bulkActionProviderStorage.Get(context.ActionName);
 
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, context, new BulkActionsAuthorizationRequirement(ModuleConstants.Security.Permissions.Read));
+            //TODO
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, context, new BulkActionsAuthorizationRequirement(actionProvider.Permissions.FirstOrDefault()));
             if (!authorizationResult.Succeeded)
             {
                 return Unauthorized();
@@ -91,7 +92,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
 
             var factory = actionProvider.BulkActionFactory;
             var action = factory.Create(context);
-            var actionData = action.GetActionData();
+            var actionData = await action.GetActionDataAsync();
 
             return Ok(actionData);
         }
@@ -121,7 +122,8 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
 
             var actionProvider = _bulkActionProviderStorage.Get(context.ActionName);
 
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, context, new BulkActionsAuthorizationRequirement(ModuleConstants.Security.Permissions.Read));
+            //TODO
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, context, new BulkActionsAuthorizationRequirement(actionProvider.Permissions.FirstOrDefault()));
             if (!authorizationResult.Succeeded)
             {
                 return Unauthorized();

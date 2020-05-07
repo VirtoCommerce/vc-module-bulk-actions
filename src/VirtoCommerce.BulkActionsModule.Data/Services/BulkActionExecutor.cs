@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
 using VirtoCommerce.BulkActionsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
@@ -28,8 +29,7 @@ namespace VirtoCommerce.BulkActionsModule.Data.Services
             _bulkActionProviderStorage = bulkActionProviderStorage;
         }
 
-        public virtual void Execute(
-            BulkActionContext context,
+        public virtual async Task ExecuteAsync(BulkActionContext context,
             Action<BulkActionProgressContext> progressAction,
             ICancellationToken token)
         {
@@ -47,22 +47,22 @@ namespace VirtoCommerce.BulkActionsModule.Data.Services
             try
             {
                 var action = GetAction(context);
-                ValidateAction(action);
+                await ValidateActionAsync(action);
                 SendFeedback();
 
                 var dataSource = GetDataSource(context);
-                totalCount = dataSource.GetTotalCount();
+                totalCount = await dataSource.GetTotalCountAsync();
 
                 SetProcessedCount(processedCount);
                 SetTotalCount(totalCount);
                 SetDescription("The process has been started…");
                 SendFeedback();
 
-                while (dataSource.Fetch())
+                while (await dataSource.FetchAsync())
                 {
                     ThrowIfCancellationRequested();
 
-                    var result = action.Execute(dataSource.Items);
+                    var result = await action.ExecuteAsync(dataSource.Items);
 
                     if (result.Succeeded)
                     {
@@ -159,9 +159,9 @@ namespace VirtoCommerce.BulkActionsModule.Data.Services
             _token.ThrowIfCancellationRequested();
         }
 
-        private void ValidateAction(IBulkAction action)
+        private async Task ValidateActionAsync(IBulkAction action)
         {
-            var validationResult = action.Validate();
+            var validationResult = await action.ValidateAsync();
             var proceed = validationResult.Succeeded;
 
             ThrowIfCancellationRequested();

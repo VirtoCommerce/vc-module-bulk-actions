@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
 using VirtoCommerce.Platform.Core.Common;
 
@@ -8,10 +9,10 @@ namespace VirtoCommerce.BulkActionsModule.Core.Services
     {
         BulkActionContext Context { get; }
 
-        BulkActionResult Execute(IEnumerable<IEntity> entities);
+        Task<BulkActionResult> ExecuteAsync(IEnumerable<IEntity> entities);
 
-        object GetActionData();
+        Task<object> GetActionDataAsync();
 
-        BulkActionResult Validate();
+        Task<BulkActionResult> ValidateAsync();
     }
 }

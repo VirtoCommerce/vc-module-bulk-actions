@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.BulkActionsModule.Core.Services
@@ -7,8 +8,8 @@ namespace VirtoCommerce.BulkActionsModule.Core.Services
     {
         IEnumerable<IEntity> Items { get; }
 
-        bool Fetch();
+        Task<bool> FetchAsync();
 
-        int GetTotalCount();
+        Task<int> GetTotalCountAsync();
     }
 }

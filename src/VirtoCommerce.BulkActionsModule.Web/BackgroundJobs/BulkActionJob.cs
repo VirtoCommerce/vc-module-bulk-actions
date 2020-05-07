@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using Hangfire;
 using Hangfire.Server;
 using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
@@ -43,7 +42,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.BackgroundJobs
             try
             {
                 var tokenWrapper = new JobCancellationTokenWrapper(cancellationToken);
-                _bulkActionExecutor.Execute(
+                _bulkActionExecutor.ExecuteAsync(
                     bulkActionContext,
                     context =>
                     {
