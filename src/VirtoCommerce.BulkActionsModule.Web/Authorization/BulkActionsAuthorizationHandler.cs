@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using VirtoCommerce.BulkActionsModule.Data.Authorization;
@@ -13,7 +14,8 @@ namespace VirtoCommerce.BulkActionsModule.Web.Authorization
 
             if (!context.HasSucceeded)
             {
-
+                //TODO
+                throw new NotImplementedException();
             }
         }
     }
