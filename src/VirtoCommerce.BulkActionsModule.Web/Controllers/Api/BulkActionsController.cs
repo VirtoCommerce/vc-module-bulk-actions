@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
@@ -9,9 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.BulkActionsModule.Core;
 using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
 using VirtoCommerce.BulkActionsModule.Core.Services;
-using VirtoCommerce.BulkActionsModule.Data.Authorization;
 using VirtoCommerce.BulkActionsModule.Web.BackgroundJobs;
-using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Security;
 
 namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
@@ -34,8 +30,8 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
         /// <param name="userNameResolver">
         /// The user name resolver.
         /// </param>
-        /// <param name="securityHandlerFactory">
-        /// The security handler factory.
+        /// <param name="authorizationService">
+        /// 
         /// </param>
         /// <param name="backgroundJobExecutor">
         /// The background job executor.
@@ -83,9 +79,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
 
             var actionProvider = _bulkActionProviderStorage.Get(context.ActionName);
 
-            //TODO
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, context, new BulkActionsAuthorizationRequirement(actionProvider.Permissions.FirstOrDefault()));
-            if (!authorizationResult.Succeeded)
+            if (!await IsAuthorizedUserHasPermissionsAsync(actionProvider.Permissions))
             {
                 return Unauthorized();
             }
@@ -122,9 +116,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
 
             var actionProvider = _bulkActionProviderStorage.Get(context.ActionName);
 
-            //TODO
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, context, new BulkActionsAuthorizationRequirement(actionProvider.Permissions.FirstOrDefault()));
-            if (!authorizationResult.Succeeded)
+            if (!await IsAuthorizedUserHasPermissionsAsync(actionProvider.Permissions))
             {
                 return Unauthorized();
             }
@@ -148,5 +140,22 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
                 throw new ArgumentNullException(nameof(context));
             }
         }
+
+        /// <summary>
+        /// Performs all security handlers checks, and returns true if all are succeeded.
+        /// </summary>
+        /// <param name="permissions">
+        /// The permissions.
+        /// </param>
+        /// <returns>
+        /// True if all checks are succeeded, otherwise false.
+        /// </returns>
+        private async Task<bool> IsAuthorizedUserHasPermissionsAsync(string[] permissions)
+        {
+            var authorizedTasks = permissions.Select(async x => await _authorizationService.AuthorizeAsync(User, x)).ToArray();
+            await Task.WhenAll(authorizedTasks);
+            return authorizedTasks.All(t => t.Result.Succeeded);
+        }
+
     }
 }

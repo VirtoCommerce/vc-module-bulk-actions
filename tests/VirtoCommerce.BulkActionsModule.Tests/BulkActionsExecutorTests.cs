@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using VirtoCommerce.BulkActionsModule.Core.Services;
 
 namespace VirtoCommerce.BulkActionsModule.Tests
@@ -18,7 +19,7 @@ namespace VirtoCommerce.BulkActionsModule.Tests
     public class BulkActionsExecutorTests
     {
         [Fact]
-        public void Execute_PagedDataSource_InvokeFetch()
+        public async Task Execute_PagedDataSource_InvokeFetch()
         {
             // arrange
             var succeeded = true;
@@ -35,23 +36,23 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             var bulkActionProviderMock = Mock.Get(bulkActionProvider);
             var pagedDataSourceMock = Mock.Get(pagedDataSource);
 
-            bulkActionMock.Setup(t => t.Validate()).Returns(bulkActionValidationResult);
-            bulkActionMock.Setup(t => t.Execute(It.IsAny<IEnumerable<IEntity>>())).Returns(bulkActionResult);
+            bulkActionMock.Setup(t => t.ValidateAsync()).ReturnsAsync(bulkActionValidationResult);
+            bulkActionMock.Setup(t => t.ExecuteAsync(It.IsAny<IEnumerable<IEntity>>())).ReturnsAsync(bulkActionResult);
             bulkActionProviderMock.Setup(t => t.BulkActionFactory.Create(It.IsAny<BulkActionContext>())).Returns(bulkAction);
             bulkActionProviderMock.Setup(t => t.DataSourceFactory.Create(It.IsAny<BulkActionContext>())).Returns(pagedDataSource);
             bulkActionProviderStorageMock.Setup(t => t.Get(It.IsAny<string>())).Returns(bulkActionProvider);
-            pagedDataSourceMock.SetupSequence(t => t.Fetch()).Returns(true).Returns(false);
+            pagedDataSourceMock.SetupSequence(t => t.FetchAsync()).ReturnsAsync(true).ReturnsAsync(false);
 
             // act
             var bulkActionExecutor = new BulkActionExecutor(bulkActionProviderStorageMock.Object);
-            bulkActionExecutor.Execute(Mock.Of<BulkActionContext>(), callback => { }, cancellationToken);
+            await bulkActionExecutor.ExecuteAsync(Mock.Of<BulkActionContext>(), callback => { }, cancellationToken);
 
             // assert
-            pagedDataSourceMock.Verify(t => t.Fetch(), Times.Exactly(2));
+            pagedDataSourceMock.Verify(t => t.FetchAsync(), Times.Exactly(2));
         }
 
         [Fact]
-        public void Execute_CancellationToken_InvokeThrowIfCancellationRequested()
+        public async Task Execute_CancellationToken_InvokeThrowIfCancellationRequested()
         {
             // arrange
             var bulkAction = Mock.Of<IBulkAction>();
@@ -67,19 +68,19 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             var bulkActionProviderStorageMock = Mock.Get(bulkActionProviderStorage);
             var bulkActionMock = Mock.Get(bulkAction);
 
-            bulkActionMock.Setup(t => t.Validate()).Returns(bulkActionValidationResult);
+            bulkActionMock.Setup(t => t.ValidateAsync()).ReturnsAsync(bulkActionValidationResult);
             bulkActionFactoryMock.Setup(t => t.Create(It.IsAny<BulkActionContext>())).Returns(bulkAction);
             bulkActionProviderStorageMock.Setup(t => t.Get(It.IsAny<string>())).Returns(bulkActionProvider);
 
             // act
-            bulkActionExecutor.Execute(Mock.Of<BulkActionContext>(), callback => { }, cancellationToken);
+            await bulkActionExecutor.ExecuteAsync(Mock.Of<BulkActionContext>(), callback => { }, cancellationToken);
 
             // assert
             cancellationTokenMock.Verify(token => token.ThrowIfCancellationRequested(), () => Times.Exactly(1));
         }
 
         [Fact]
-        public void Execute_NullableArgs_ThrowArgumentNullException()
+        public async Task Execute_NullableArgs_ThrowArgumentNullException()
         {
             // arrange
             var cancellationToken = Mock.Of<ICancellationToken>();
@@ -87,8 +88,8 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             var bulkActionExecutor = new BulkActionExecutor(bulkActionProviderStorage);
 
             // act
-            bulkActionExecutor.Execute(Mock.Of<BulkActionContext>(), callback => { }, cancellationToken);
-            var action = new Action(() => bulkActionExecutor.Execute(null, null, null));
+            await bulkActionExecutor.ExecuteAsync(Mock.Of<BulkActionContext>(), callback => { }, cancellationToken);
+            var action = new Action(() => bulkActionExecutor.ExecuteAsync(null, null, null).GetAwaiter().GetResult());
 
             // assert
             action.Should().Throw<ArgumentNullException>();
