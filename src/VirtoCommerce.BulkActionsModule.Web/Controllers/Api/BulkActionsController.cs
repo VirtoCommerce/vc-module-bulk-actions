@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
@@ -128,7 +129,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
                 Description = "Starting…"
             };
 
-            notification.JobId = _backgroundJobExecutor.Enqueue<BulkActionJob>(job => job.Execute(context, notification, JobCancellationToken.Null, null));
+            notification.JobId = _backgroundJobExecutor.Enqueue<BulkActionJob>(job => job.ExecuteAsync(context, notification, JobCancellationToken.Null, null));
 
             return Ok(notification);
         }

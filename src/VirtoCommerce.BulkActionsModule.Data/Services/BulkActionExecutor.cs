@@ -60,7 +60,7 @@ namespace VirtoCommerce.BulkActionsModule.Data.Services
 
                 while (await dataSource.FetchAsync())
                 {
-                    //ThrowIfCancellationRequested();
+                    ThrowIfCancellationRequested();
 
                     var result = await action.ExecuteAsync(dataSource.Items);
 
