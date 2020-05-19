@@ -32,7 +32,6 @@ angular.module(moduleName, [])
         'platformWebApp.widgetService',
         '$state', 'platformWebApp.toolbarService',
         'platformWebApp.bladeUtils',
-        'virtoCommerce.catalogModule.catalogBulkActionService',
         'platformWebApp.bladeNavigationService',
         function ($rootScope,
             mainMenuService,
@@ -40,7 +39,6 @@ angular.module(moduleName, [])
             $state,
             toolbarService,
             bladeUtils,
-            catalogBulkActionService,
             bladeNavigationService) {
 
             //Register module in main menu
