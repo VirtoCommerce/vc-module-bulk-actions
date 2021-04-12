@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.BulkActionsModule</id>
   <version>3.3.0</version>
@@ -14,7 +14,7 @@
   </owners>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <releaseNotes>First version.</releaseNotes>
-  <copyright>Copyright © 2020 . All rights reserved</copyright>
+  <copyright>Copyright © 2020 - 2021 Virto Commerce. All rights reserved</copyright>
   <tags>extension module</tags>
   <assemblyFile>VirtoCommerce.BulkActionsModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.BulkActionsModule.Web.Module, VirtoCommerce.BulkActionsModule.Web</moduleType>
