@@ -7,6 +7,7 @@ using VirtoCommerce.BulkActionsModule.Core.Services;
 using VirtoCommerce.BulkActionsModule.Data.Extensions;
 using VirtoCommerce.Platform.Core.Exceptions;
 using VirtoCommerce.Platform.Core.PushNotifications;
+using VirtoCommerce.Platform.Hangfire;
 
 namespace VirtoCommerce.BulkActionsModule.Web.BackgroundJobs
 {
