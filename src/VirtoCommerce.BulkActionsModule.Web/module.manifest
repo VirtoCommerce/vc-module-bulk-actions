@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <id>VirtoCommerce.BulkActionsModule</id>
-  <version>3.800.0</version>
-  <version-tag />
-  <platformVersion>3.800.0</platformVersion>
-  <title>Bulk Actions</title>
-  <description>Bulk actions module</description>
-  <authors>
-    <author>Burashov T.S.</author>
-  </authors>
-  <owners>
-    <owner>Virto Commerce</owner>
-  </owners>
-  <requireLicenseAcceptance>false</requireLicenseAcceptance>
-  <releaseNotes>First version.</releaseNotes>
-  <copyright>Copyright © 2011-2024 Virto Commerce. All rights reserved</copyright>
-  <tags>extension module</tags>
-  <assemblyFile>VirtoCommerce.BulkActionsModule.Web.dll</assemblyFile>
-  <moduleType>VirtoCommerce.BulkActionsModule.Web.Module, VirtoCommerce.BulkActionsModule.Web</moduleType>
-  <dependencies>
-    <dependency id="VirtoCommerce.Core" version="3.800.0" />
-  </dependencies>
-  <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
+    <id>VirtoCommerce.BulkActionsModule</id>
+    <version>3.801.0</version>
+    <version-tag />
+    <platformVersion>3.800.0</platformVersion>
+    <dependencies>
+        <dependency id="VirtoCommerce.Core" version="3.800.0" />
+    </dependencies>
+    <title>Bulk Actions</title>
+    <description>Bulk actions module</description>
+    <authors>
+        <author>Burashov T.S.</author>
+    </authors>
+    <owners>
+        <owner>Virto Commerce</owner>
+    </owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <releaseNotes>First version.</releaseNotes>
+    <copyright>Copyright © 2011-2024 Virto Commerce. All rights reserved</copyright>
+    <tags>extension module</tags>
+    <groups>
+        <group>commerce</group>
+    </groups>
+
+    <assemblyFile>VirtoCommerce.BulkActionsModule.Web.dll</assemblyFile>
+    <moduleType>VirtoCommerce.BulkActionsModule.Web.Module, VirtoCommerce.BulkActionsModule.Web</moduleType>
+
+    <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
 </module>
