@@ -55,7 +55,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
         /// The job id.
         /// </param>
         /// <returns>
-        /// The <see cref="IHttpActionResult"/>.
+        /// The <see cref="ActionResult"/>.
         /// </returns>
         [HttpDelete]
         [Authorize(ModuleConstants.Security.Permissions.Execute)]
