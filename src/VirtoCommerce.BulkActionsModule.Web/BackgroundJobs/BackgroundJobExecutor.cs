@@ -1,8 +1,9 @@
-﻿namespace VirtoCommerce.BulkActionsModule.Web.BackgroundJobs
+using System.Threading.Tasks;
+
+namespace VirtoCommerce.BulkActionsModule.Web.BackgroundJobs
 {
     using System;
     using System.Linq.Expressions;
-
     using Hangfire;
 
     public class BackgroundJobExecutor : IBackgroundJobExecutor
@@ -12,7 +13,7 @@
             BackgroundJob.Delete(jobId);
         }
 
-        public string Enqueue<T>(Expression<Action<T>> expression)
+        public string Enqueue<T>(Expression<Func<T, Task>> expression)
         {
             return BackgroundJob.Enqueue(expression);
         }
