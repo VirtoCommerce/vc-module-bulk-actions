@@ -1,0 +1,6 @@
+{
+  "permissions": {
+    "bulk-actions:execute": "执行",
+    "bulk-actions:read": "读取"
+  }
+}
