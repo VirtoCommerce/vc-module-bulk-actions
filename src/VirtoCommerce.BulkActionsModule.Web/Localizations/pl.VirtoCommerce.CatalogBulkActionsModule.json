@@ -1,0 +1,6 @@
+{
+  "permissions": {
+    "bulk-actions:execute": "Wykonaj",
+    "bulk-actions:read": "Odczyt"
+  }
+}
