@@ -23,7 +23,7 @@
     <NoWarn>1701;1702;1705;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.853.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.916.0-alpha.13164-vcst-4203-cleanup" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.BulkActionsModule.Core\VirtoCommerce.BulkActionsModule.Core.csproj" />
