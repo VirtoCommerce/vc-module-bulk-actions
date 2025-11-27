@@ -3,9 +3,9 @@
   <id>VirtoCommerce.BulkActionsModule</id>
   <version>3.805.0</version>
   <version-tag />
-  <platformVersion>3.916.0-alpha.13164-vcst-4203-cleanup</platformVersion>
+  <platformVersion>3.917.0</platformVersion>
   <dependencies>
-    <dependency id="VirtoCommerce.Core" version="3.823.0-alpha.1666-vcst-4203-cleanup" />
+    <dependency id="VirtoCommerce.Core" version="3.824.0" />
   </dependencies>
   <title>Bulk Actions</title>
   <description>Bulk actions module</description>
