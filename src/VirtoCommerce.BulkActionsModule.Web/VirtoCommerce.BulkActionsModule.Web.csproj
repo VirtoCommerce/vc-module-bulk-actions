@@ -4,7 +4,6 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <noWarn>1591</noWarn>
     <IsPackable>False</IsPackable>
-    <LangVersion>latest</LangVersion>
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <PropertyGroup>
@@ -23,7 +22,7 @@
     <NoWarn>1701;1702;1705;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.853.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.917.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.BulkActionsModule.Core\VirtoCommerce.BulkActionsModule.Core.csproj" />
