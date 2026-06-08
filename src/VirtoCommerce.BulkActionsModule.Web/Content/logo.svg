@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Bulk Actions">
+  <title>Bulk Actions</title>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="92%" y2="100%">
+      <stop offset="0%" stop-color="#5FC8F5"/>
+      <stop offset="100%" stop-color="#265FC6"/>
+    </linearGradient>
+    <linearGradient id="bolt" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFD24D"/>
+      <stop offset="100%" stop-color="#F2A81E"/>
+    </linearGradient>
+    <filter id="lift" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="#0B3F66" flood-opacity="0.30"/>
+    </filter>
+  </defs>
+
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+
+  <g transform="translate(64,64)" filter="url(#lift)">
+    <!-- Batch of stacked item cards -->
+    <rect x="-20" y="-42" width="62" height="62" rx="10" fill="#9D86F5"/>
+    <rect x="-30" y="-34" width="62" height="62" rx="10" fill="#3FD8B4"/>
+    <rect x="-40" y="-26" width="62" height="62" rx="10" fill="#ffffff"/>
+    <!-- Front item content -->
+    <rect x="-32" y="-18" width="20" height="20" rx="4" fill="#5FC8F5"/>
+    <line x1="-7" y1="-13" x2="14" y2="-13" stroke="#9FB6CC" stroke-width="4.5" stroke-linecap="round"/>
+    <line x1="-7" y1="-3" x2="14" y2="-3" stroke="#CBD8E6" stroke-width="4.5" stroke-linecap="round"/>
+    <line x1="-32" y1="14" x2="6" y2="14" stroke="#CBD8E6" stroke-width="4.5" stroke-linecap="round"/>
+
+    <!-- Lightning action badge -->
+    <circle cx="31" cy="29" r="16" fill="url(#bolt)"/>
+    <polygon points="34,18 23,31 30,31 27,42 39,28 32,28" fill="#ffffff"/>
+  </g>
+</svg>

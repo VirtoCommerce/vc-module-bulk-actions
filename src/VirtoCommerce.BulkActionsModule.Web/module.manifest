@@ -16,6 +16,7 @@
     <owner>Virto Commerce</owner>
   </owners>
   <projectUrl>https://github.com/VirtoCommerce/vc-module-bulk-actions</projectUrl>
+  <iconUrl>Modules/$(VirtoCommerce.BulkActionsModule)/Content/logo.svg</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <releaseNotes>First version.</releaseNotes>
   <copyright>Copyright © 2011-2026 Virto Commerce. All rights reserved</copyright>
