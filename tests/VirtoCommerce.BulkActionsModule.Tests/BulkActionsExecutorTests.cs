@@ -1,21 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Moq;
+using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
 using VirtoCommerce.BulkActionsModule.Core.Services;
+using VirtoCommerce.BulkActionsModule.Data.Services;
+using VirtoCommerce.Platform.Core.Common;
+using Xunit;
 
 namespace VirtoCommerce.BulkActionsModule.Tests
 {
-    using System;
-    using System.Collections.Generic;
-
-    using FluentAssertions;
-
-    using Moq;
-
-    using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
-    using VirtoCommerce.BulkActionsModule.Data.Services;
-    using VirtoCommerce.Platform.Core.Common;
-
-    using Xunit;
-
     public class BulkActionsExecutorTests
     {
         [Fact]
@@ -24,7 +20,7 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             // arrange
             var succeeded = true;
             var bulkAction = Mock.Of<IBulkAction>();
-            var cancellationToken = Mock.Of<ICancellationToken>();
+            var cancellationToken = CancellationToken.None;
             var bulkActionProviderStorage = Mock.Of<IBulkActionProviderStorage>();
             var pagedDataSource = Mock.Of<IDataSource>();
             var bulkActionProvider = Mock.Of<IBulkActionProvider>();
@@ -52,18 +48,19 @@ namespace VirtoCommerce.BulkActionsModule.Tests
         }
 
         [Fact]
-        public async Task Execute_CancellationToken_InvokeThrowIfCancellationRequested()
+        public async Task Execute_CanceledToken_ThrowsOperationCanceled()
         {
             // arrange
             var bulkAction = Mock.Of<IBulkAction>();
-            var cancellationToken = Mock.Of<ICancellationToken>();
-            var bulkActionValidationResult = Mock.Of<BulkActionResult>();
+            using var cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.Cancel();
+            var cancellationToken = cancellationTokenSource.Token;
+            var bulkActionValidationResult = Mock.Of<BulkActionResult>(t => t.Succeeded == true);
             var bulkActionFactory = Mock.Of<IBulkActionFactory>();
             var bulkActionProviderStorage = Mock.Of<IBulkActionProviderStorage>();
             var bulkActionExecutor = new BulkActionExecutor(bulkActionProviderStorage);
             var bulkActionProvider = Mock.Of<IBulkActionProvider>(t => t.BulkActionFactory == bulkActionFactory);
 
-            var cancellationTokenMock = Mock.Get(cancellationToken);
             var bulkActionFactoryMock = Mock.Get(bulkActionFactory);
             var bulkActionProviderStorageMock = Mock.Get(bulkActionProviderStorage);
             var bulkActionMock = Mock.Get(bulkAction);
@@ -73,23 +70,23 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             bulkActionProviderStorageMock.Setup(t => t.Get(It.IsAny<string>())).Returns(bulkActionProvider);
 
             // act
-            await bulkActionExecutor.ExecuteAsync(Mock.Of<BulkActionContext>(), callback => { }, cancellationToken);
+            var act = async () => await bulkActionExecutor.ExecuteAsync(Mock.Of<BulkActionContext>(), callback => { }, cancellationToken);
 
             // assert
-            cancellationTokenMock.Verify(token => token.ThrowIfCancellationRequested(), () => Times.Exactly(1));
+            await act.Should().ThrowAsync<OperationCanceledException>();
         }
 
         [Fact]
         public async Task Execute_NullableArgs_ThrowArgumentNullException()
         {
             // arrange
-            var cancellationToken = Mock.Of<ICancellationToken>();
+            var cancellationToken = CancellationToken.None;
             var bulkActionProviderStorage = Mock.Of<IBulkActionProviderStorage>();
             var bulkActionExecutor = new BulkActionExecutor(bulkActionProviderStorage);
 
             // act
             await bulkActionExecutor.ExecuteAsync(Mock.Of<BulkActionContext>(), callback => { }, cancellationToken);
-            var action = new Action(() => bulkActionExecutor.ExecuteAsync(null, null, null).GetAwaiter().GetResult());
+            var action = new Action(() => bulkActionExecutor.ExecuteAsync(null, null, default).GetAwaiter().GetResult());
 
             // assert
             action.Should().Throw<ArgumentNullException>();
