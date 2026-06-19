@@ -1,4 +1,5 @@
-using System;
+using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace VirtoCommerce.BulkActionsModule.Data.Services
 
         private BulkActionProgressContext _progressContext;
 
-        private ICancellationToken _token;
+        private CancellationToken _token;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BulkActionExecutor"/> class.
@@ -31,7 +32,7 @@ namespace VirtoCommerce.BulkActionsModule.Data.Services
 
         public virtual async Task ExecuteAsync(BulkActionContext context,
             Action<BulkActionProgressContext> progressAction,
-            ICancellationToken token)
+            CancellationToken token)
         {
             // initialize the common context
             _progressAction = progressAction;
