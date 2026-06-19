@@ -43,7 +43,6 @@ namespace VirtoCommerce.BulkActionsModule.Web.BackgroundJobs
 
             try
             {
-                var tokenWrapper = new JobCancellationTokenWrapper(cancellationToken);
                 await _bulkActionExecutor.ExecuteAsync(
                     bulkActionContext,
                     context =>
@@ -52,7 +51,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.BackgroundJobs
                         notification.JobId = performContext.BackgroundJob.Id;
                         _pushNotificationManager.Send(notification);
                     },
-                    tokenWrapper);
+                    cancellationToken.ShutdownToken);
             }
             catch (JobAbortedException)
             {
