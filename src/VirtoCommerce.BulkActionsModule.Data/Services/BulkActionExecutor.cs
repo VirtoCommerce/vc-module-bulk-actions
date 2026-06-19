@@ -1,4 +1,4 @@
-using System;
+using System;
 using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,6 +85,11 @@ namespace VirtoCommerce.BulkActionsModule.Data.Services
                     SetDescription($"{processedCount} out of {totalCount} have been updated.");
                     SendFeedback();
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                // cancellation must propagate, not be reported as a generic error
+                throw;
             }
             catch (Exception exception)
             {
