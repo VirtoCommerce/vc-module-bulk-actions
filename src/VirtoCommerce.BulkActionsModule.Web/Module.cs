@@ -6,6 +6,7 @@ using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
 using VirtoCommerce.BulkActionsModule.Core.Services;
 using VirtoCommerce.BulkActionsModule.Data.Services;
 using VirtoCommerce.BulkActionsModule.Web.BackgroundJobs;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.JsonConverters;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
@@ -20,7 +21,7 @@ namespace VirtoCommerce.BulkActionsModule.Web
         {
             serviceCollection.AddSingleton<IBulkActionProviderStorage>(new BulkActionProviderStorage());
             serviceCollection.AddTransient<IBulkActionExecutor, BulkActionExecutor>();
-            serviceCollection.AddTransient<IBackgroundJobExecutor, BackgroundJobExecutor>();
+            serviceCollection.AddBackgroundJob<BulkActionJob>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)

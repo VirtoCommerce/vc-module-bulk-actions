@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.BulkActionsModule.Core;
 using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
 using VirtoCommerce.BulkActionsModule.Core.Services;
 using VirtoCommerce.BulkActionsModule.Web.BackgroundJobs;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.Security;
 
 namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
@@ -16,7 +16,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
     [Route("api/bulk/actions")]
     public class BulkActionsController : Controller
     {
-        private readonly IBackgroundJobExecutor _backgroundJobExecutor;
+        private readonly IBackgroundJob _backgroundJob;
         private readonly IBulkActionProviderStorage _bulkActionProviderStorage;
         private readonly IUserNameResolver _userNameResolver;
         private readonly IAuthorizationService _authorizationService;
@@ -31,20 +31,20 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
         /// The user name resolver.
         /// </param>
         /// <param name="authorizationService">
-        /// 
+        ///
         /// </param>
-        /// <param name="backgroundJobExecutor">
-        /// The background job executor.
+        /// <param name="backgroundJob">
+        /// The background job client.
         /// </param>
         public BulkActionsController(
             IBulkActionProviderStorage bulkActionProviderStorage,
             IUserNameResolver userNameResolver,
-            IBackgroundJobExecutor backgroundJobExecutor,
+            IBackgroundJob backgroundJob,
             IAuthorizationService authorizationService)
         {
             _bulkActionProviderStorage = bulkActionProviderStorage;
             _userNameResolver = userNameResolver;
-            _backgroundJobExecutor = backgroundJobExecutor;
+            _backgroundJob = backgroundJob;
             _authorizationService = authorizationService;
         }
 
@@ -59,9 +59,9 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
         /// </returns>
         [HttpDelete]
         [Authorize(ModuleConstants.Security.Permissions.Execute)]
-        public ActionResult Cancel(string jobId)
+        public async Task<ActionResult> Cancel(string jobId)
         {
-            _backgroundJobExecutor.Delete(jobId);
+            await _backgroundJob.Cancel(jobId);
             return NoContent();
         }
 
@@ -128,7 +128,7 @@ namespace VirtoCommerce.BulkActionsModule.Web.Controllers.Api
                 Description = "Starting…"
             };
 
-            notification.JobId = _backgroundJobExecutor.Enqueue<BulkActionJob>(job => job.ExecuteAsync(context, notification, JobCancellationToken.Null, null));
+            notification.JobId = await _backgroundJob.Enqueue<BulkActionJob>(new BulkActionJobPayload { Context = context, Notification = notification });
 
             return Ok(notification);
         }
