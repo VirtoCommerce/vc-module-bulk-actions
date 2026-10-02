@@ -10,8 +10,8 @@ using Moq;
 using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
 using VirtoCommerce.BulkActionsModule.Core.Services;
 using VirtoCommerce.BulkActionsModule.Tests.Models;
-using VirtoCommerce.BulkActionsModule.Web.BackgroundJobs;
 using VirtoCommerce.BulkActionsModule.Web.Controllers.Api;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.Security;
 using Xunit;
 
@@ -22,26 +22,26 @@ namespace VirtoCommerce.BulkActionsModule.Tests
         private readonly Type _controllerType = typeof(BulkActionsController);
 
         [Fact]
-        public void Cancel_EmptyString_NotContentResult()
+        public async Task Cancel_EmptyString_NotContentResult()
         {
             // arrange
             var controller = BuildController();
 
             // act
-            var result = (StatusCodeResult)controller.Cancel(string.Empty);
+            var result = (StatusCodeResult)await controller.Cancel(string.Empty);
 
             // assert
             result.StatusCode.Should().Be((int)HttpStatusCode.NoContent);
         }
 
         [Fact]
-        public void Cancel_EmptyString_StatusCodeResult()
+        public async Task Cancel_EmptyString_StatusCodeResult()
         {
             // arrange
             var controller = BuildController();
 
             // act
-            var result = controller.Cancel(string.Empty);
+            var result = await controller.Cancel(string.Empty);
 
             // assert
             result.Should().BeOfType<NoContentResult>();
@@ -350,11 +350,11 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             var bulkActionProviderStorage = new Mock<IBulkActionProviderStorage>();
             var userNameResolver = new Mock<IUserNameResolver>();
             var authorizationService = new Mock<IAuthorizationService>();
-            var backgroundExecutor = new Mock<IBackgroundJobExecutor>();
+            var backgroundJob = new Mock<IBackgroundJob>();
             var controller = new BulkActionsController(
                 bulkActionProviderStorage.Object,
                 userNameResolver.Object,
-                backgroundExecutor.Object,
+                backgroundJob.Object,
                 authorizationService.Object);
 
             return controller;
@@ -364,11 +364,11 @@ namespace VirtoCommerce.BulkActionsModule.Tests
         {
             var userNameResolver = new Mock<IUserNameResolver>();
             var authorizationService = new Mock<IAuthorizationService>();
-            var backgroundExecutor = new Mock<IBackgroundJobExecutor>();
+            var backgroundJob = new Mock<IBackgroundJob>();
             var controller = new BulkActionsController(
                 bulkActionProviderStorage.Object,
                 userNameResolver.Object,
-                backgroundExecutor.Object,
+                backgroundJob.Object,
                 authorizationService.Object);
 
             return controller;
@@ -379,11 +379,11 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             IMock<IAuthorizationService> authorizationService)
         {
             var userNameResolver = new Mock<IUserNameResolver>();
-            var backgroundExecutor = new Mock<IBackgroundJobExecutor>();
+            var backgroundJob = new Mock<IBackgroundJob>();
             var controller = new BulkActionsController(
                 bulkActionProviderStorage.Object,
                 userNameResolver.Object,
-                backgroundExecutor.Object,
+                backgroundJob.Object,
                 authorizationService.Object);
 
             return controller;
@@ -394,11 +394,11 @@ namespace VirtoCommerce.BulkActionsModule.Tests
             IMock<IAuthorizationService> authorizationService,
             IMock<IUserNameResolver> userNameResolver)
         {
-            var backgroundExecutor = new Mock<IBackgroundJobExecutor>();
+            var backgroundJob = new Mock<IBackgroundJob>();
             var controller = new BulkActionsController(
                 bulkActionProviderStorage.Object,
                 userNameResolver.Object,
-                backgroundExecutor.Object,
+                backgroundJob.Object,
                 authorizationService.Object);
 
             return controller;

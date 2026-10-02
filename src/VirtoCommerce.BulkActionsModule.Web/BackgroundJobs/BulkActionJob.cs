@@ -1,17 +1,29 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
-using Hangfire;
-using Hangfire.Server;
 using VirtoCommerce.BulkActionsModule.Core.Models.BulkActions;
 using VirtoCommerce.BulkActionsModule.Core.Services;
 using VirtoCommerce.BulkActionsModule.Data.Extensions;
 using VirtoCommerce.Platform.Core.Exceptions;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.PushNotifications;
-using VirtoCommerce.Platform.Hangfire;
 
 namespace VirtoCommerce.BulkActionsModule.Web.BackgroundJobs
 {
-    public class BulkActionJob
+    public class BulkActionJobPayload
+    {
+        public BulkActionContext Context { get; set; }
+
+        public BulkActionPushNotification Notification { get; set; }
+    }
+
+    /// <summary>
+    /// Engine-agnostic bulk-action job. Replaces the former Hangfire job that used
+    /// <c>PerformContext</c>/<c>IJobCancellationToken</c>: progress still flows through the module's own
+    /// push-notification manager; the job id comes from <see cref="IJobExecutionContext.JobId"/> and
+    /// cancellation from the handler's <see cref="CancellationToken"/>.
+    /// </summary>
+    public class BulkActionJob : IBackgroundJobHandler<BulkActionJobPayload>
     {
         private readonly IBulkActionExecutor _bulkActionExecutor;
 
@@ -32,28 +44,27 @@ namespace VirtoCommerce.BulkActionsModule.Web.BackgroundJobs
             _bulkActionExecutor = bulkActionExecutor;
         }
 
-        public async Task ExecuteAsync(
-            BulkActionContext bulkActionContext,
-            BulkActionPushNotification notification,
-            IJobCancellationToken cancellationToken,
-            PerformContext performContext)
+        public async Task Execute(BulkActionJobPayload payload, IJobExecutionContext context, CancellationToken cancellationToken = default)
         {
-            Validate(bulkActionContext);
-            Validate(performContext);
+            Validate(payload);
+            Validate(payload.Context);
+
+            var bulkActionContext = payload.Context;
+            var notification = payload.Notification;
 
             try
             {
                 await _bulkActionExecutor.ExecuteAsync(
                     bulkActionContext,
-                    context =>
+                    progressContext =>
                     {
-                        notification.Patch(context);
-                        notification.JobId = performContext.BackgroundJob.Id;
+                        notification.Patch(progressContext);
+                        notification.JobId = context.JobId;
                         _pushNotificationManager.Send(notification);
                     },
-                    cancellationToken.ShutdownToken);
+                    cancellationToken);
             }
-            catch (JobAbortedException)
+            catch (OperationCanceledException)
             {
                 // idle
             }
