@@ -39,9 +39,10 @@ import { computed } from "vue";
 import type { JobNotification } from "./useJob";
 
 const props = defineProps<{ job?: JobNotification }>();
-const percent = computed(() =>
-  props.job?.finished ? 100 : props.job?.totalCount ? Math.round(((props.job.processedCount ?? 0) / props.job.totalCount) * 100) : 0,
-);
+const percent = computed(() => {
+  if (props.job?.finished) return 100;
+  return props.job?.totalCount ? Math.round(((props.job.processedCount ?? 0) / props.job.totalCount) * 100) : 0;
+});
 </script>
 
 <style lang="scss">

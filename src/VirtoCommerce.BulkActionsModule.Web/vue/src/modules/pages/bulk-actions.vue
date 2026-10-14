@@ -162,7 +162,7 @@ async function onAction() {
 // the edited copies of the chosen properties, with empty values (Booleans default to false, legacy)
 watch(selectedNames, (names) => {
   edited.properties = names.map((n) => {
-    const kept = edited.properties.find((p) => key(p) === n);
+    const kept = edited.properties.find((x) => key(x) === n);
     if (kept) return kept;
     const p = allProperties.value.find((x) => key(x) === n)!;
     return { ...p, values: p.valueType === "Boolean" ? [{ value: false }] : [] };
