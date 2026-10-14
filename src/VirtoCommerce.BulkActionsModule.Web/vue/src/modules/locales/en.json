@@ -1,0 +1,25 @@
+{
+  "BULKACTIONS": {
+    "TITLE": "Bulk actions",
+    "ACTION": "Action",
+    "ACTIONS": {
+      "CategoryChangeBulkAction": "Change category",
+      "PropertiesUpdateBulkAction": "Update properties"
+    },
+    "SCOPE_SELECTED": "{count} selected item(s)",
+    "SCOPE_ALL": "All items in the current list ({count})",
+    "TARGET": "Move to",
+    "NO_TARGET": "Not selected",
+    "PICK_TARGET": "Select target category",
+    "REAL_ONLY": "Products can only be moved within a real catalog",
+    "PROPERTIES": "Properties to update",
+    "NEW_VALUES": "New values",
+    "START": "Start",
+    "CANCEL": "Cancel",
+    "JOB": {
+      "TITLE": "Progress",
+      "PROGRESS": "Processed {processed} of {total}, errors: {errors}",
+      "DOWNLOAD": "Download file"
+    }
+  }
+}

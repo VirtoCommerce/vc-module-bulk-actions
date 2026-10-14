@@ -17,6 +17,13 @@
     <EmbeddedResource Remove="node_modules\**" />
     <None Remove="dist\**" />
     <None Remove="node_modules\**" />
+    <!-- Admin Shell plugin: Vue sources in vue/, built into plugins/admin-shell/ -->
+    <Compile Remove="vue\**" />
+    <Content Remove="vue\**" />
+    <EmbeddedResource Remove="vue\**" />
+    <None Remove="vue\**" />
+    <Content Remove="plugins\**" />
+    <None Remove="plugins\**" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;1705;1591</NoWarn>
@@ -28,4 +35,10 @@
     <ProjectReference Include="..\VirtoCommerce.BulkActionsModule.Core\VirtoCommerce.BulkActionsModule.Core.csproj" />
     <ProjectReference Include="..\VirtoCommerce.BulkActionsModule.Data\VirtoCommerce.BulkActionsModule.Data.csproj" />
   </ItemGroup>
-</Project>
+  <ItemGroup>
+    <AdminShellPlugin Include="plugins\**" />
+  </ItemGroup>
+  <Target Name="CopyAdminShellPluginOnPublish" AfterTargets="Publish">
+    <Copy SourceFiles="@(AdminShellPlugin)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
+  </Target>
+</Project>

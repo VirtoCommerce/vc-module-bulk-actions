@@ -1,0 +1,4 @@
+{
+  // Bulk actions admin UI for the Admin Shell host (Module Federation remote): extends the Catalog list toolbar
+  "remote": { "name": "bulkactions_admin", "exposed": "./Module" }
+}
