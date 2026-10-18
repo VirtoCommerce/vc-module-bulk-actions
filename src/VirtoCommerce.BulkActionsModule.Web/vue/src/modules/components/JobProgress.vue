@@ -57,7 +57,7 @@ const percent = computed(() => {
   }
   &__errors {
     margin: 0;
-    padding-left: 18px;
+    padding-inline-start: 18px;
     color: var(--danger-500);
     font-size: 13px;
     max-height: 240px;
