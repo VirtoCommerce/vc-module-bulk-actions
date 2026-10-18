@@ -1,0 +1,25 @@
+{
+  "BULKACTIONS": {
+    "TITLE": "Массовые действия",
+    "ACTION": "Действие",
+    "ACTIONS": {
+      "CategoryChangeBulkAction": "Изменить категорию",
+      "PropertiesUpdateBulkAction": "Обновить свойства"
+    },
+    "SCOPE_SELECTED": "Выбрано элементов: {count}",
+    "SCOPE_ALL": "Все элементы текущего списка ({count})",
+    "TARGET": "Переместить в",
+    "NO_TARGET": "Не выбрано",
+    "PICK_TARGET": "Выберите целевую категорию",
+    "REAL_ONLY": "Продукты можно перемещать только в пределах реального каталога",
+    "PROPERTIES": "Обновляемые свойства",
+    "NEW_VALUES": "Новые значения",
+    "START": "Запустить",
+    "CANCEL": "Отменить",
+    "JOB": {
+      "TITLE": "Ход выполнения",
+      "PROGRESS": "Обработано {processed} из {total}, ошибок: {errors}",
+      "DOWNLOAD": "Скачать файл"
+    }
+  }
+}

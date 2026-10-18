@@ -1,0 +1,25 @@
+{
+  "BULKACTIONS": {
+    "TITLE": "Akcje zbiorcze",
+    "ACTION": "Akcja",
+    "ACTIONS": {
+      "CategoryChangeBulkAction": "Zmień kategorię",
+      "PropertiesUpdateBulkAction": "Zaktualizuj właściwości"
+    },
+    "SCOPE_SELECTED": "Wybrane elementy: {count}",
+    "SCOPE_ALL": "Wszystkie elementy bieżącej listy ({count})",
+    "TARGET": "Przenieś do",
+    "NO_TARGET": "Nie wybrano",
+    "PICK_TARGET": "Wybierz kategorię docelową",
+    "REAL_ONLY": "Produkty można przenosić tylko w obrębie katalogu rzeczywistego",
+    "PROPERTIES": "Właściwości do aktualizacji",
+    "NEW_VALUES": "Nowe wartości",
+    "START": "Rozpocznij",
+    "CANCEL": "Anuluj",
+    "JOB": {
+      "TITLE": "Postęp",
+      "PROGRESS": "Przetworzono {processed} z {total}, błędy: {errors}",
+      "DOWNLOAD": "Pobierz plik"
+    }
+  }
+}
