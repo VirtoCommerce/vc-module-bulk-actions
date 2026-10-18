@@ -1,0 +1,25 @@
+{
+  "BULKACTIONS": {
+    "TITLE": "Massehandlinger",
+    "ACTION": "Handling",
+    "ACTIONS": {
+      "CategoryChangeBulkAction": "Endre kategori",
+      "PropertiesUpdateBulkAction": "Oppdater egenskaper"
+    },
+    "SCOPE_SELECTED": "{count} valgte element(er)",
+    "SCOPE_ALL": "Alle elementer i gjeldende liste ({count})",
+    "TARGET": "Flytt til",
+    "NO_TARGET": "Ikke valgt",
+    "PICK_TARGET": "Velg målkategori",
+    "REAL_ONLY": "Produkter kan bare flyttes innenfor en reell katalog",
+    "PROPERTIES": "Egenskaper som skal oppdateres",
+    "NEW_VALUES": "Nye verdier",
+    "START": "Start",
+    "CANCEL": "Avbryt",
+    "JOB": {
+      "TITLE": "Fremdrift",
+      "PROGRESS": "Behandlet {processed} av {total}, feil: {errors}",
+      "DOWNLOAD": "Last ned fil"
+    }
+  }
+}

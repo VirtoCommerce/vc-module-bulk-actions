@@ -1,0 +1,25 @@
+{
+  "BULKACTIONS": {
+    "TITLE": "批量操作",
+    "ACTION": "操作",
+    "ACTIONS": {
+      "CategoryChangeBulkAction": "更改类别",
+      "PropertiesUpdateBulkAction": "更新属性"
+    },
+    "SCOPE_SELECTED": "已选择 {count} 个项目",
+    "SCOPE_ALL": "当前列表中的所有项目（{count}）",
+    "TARGET": "移动到",
+    "NO_TARGET": "未选择",
+    "PICK_TARGET": "选择目标类别",
+    "REAL_ONLY": "产品只能在实体目录内移动",
+    "PROPERTIES": "要更新的属性",
+    "NEW_VALUES": "新值",
+    "START": "开始",
+    "CANCEL": "取消",
+    "JOB": {
+      "TITLE": "进度",
+      "PROGRESS": "已处理 {processed}/{total}，错误：{errors}",
+      "DOWNLOAD": "下载文件"
+    }
+  }
+}
