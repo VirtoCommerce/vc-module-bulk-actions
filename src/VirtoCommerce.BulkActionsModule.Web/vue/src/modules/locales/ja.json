@@ -1,0 +1,25 @@
+{
+  "BULKACTIONS": {
+    "TITLE": "一括操作",
+    "ACTION": "操作",
+    "ACTIONS": {
+      "CategoryChangeBulkAction": "カテゴリを変更",
+      "PropertiesUpdateBulkAction": "プロパティを更新"
+    },
+    "SCOPE_SELECTED": "選択した {count} 件の項目",
+    "SCOPE_ALL": "現在のリストのすべての項目（{count}）",
+    "TARGET": "移動先",
+    "NO_TARGET": "未選択",
+    "PICK_TARGET": "移動先のカテゴリを選択",
+    "REAL_ONLY": "製品は実カタログ内でのみ移動できます",
+    "PROPERTIES": "更新するプロパティ",
+    "NEW_VALUES": "新しい値",
+    "START": "開始",
+    "CANCEL": "キャンセル",
+    "JOB": {
+      "TITLE": "進行状況",
+      "PROGRESS": "{total} 件中 {processed} 件を処理、エラー: {errors}",
+      "DOWNLOAD": "ファイルをダウンロード"
+    }
+  }
+}

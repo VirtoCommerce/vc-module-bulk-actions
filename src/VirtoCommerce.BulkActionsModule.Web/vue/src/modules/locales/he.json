@@ -1,0 +1,25 @@
+{
+  "BULKACTIONS": {
+    "TITLE": "פעולות גורפות",
+    "ACTION": "פעולה",
+    "ACTIONS": {
+      "CategoryChangeBulkAction": "שינוי קטגוריה",
+      "PropertiesUpdateBulkAction": "עדכון מאפיינים"
+    },
+    "SCOPE_SELECTED": "פריטים נבחרים: {count}",
+    "SCOPE_ALL": "כל הפריטים ברשימה הנוכחית ({count})",
+    "TARGET": "העברה אל",
+    "NO_TARGET": "לא נבחר",
+    "PICK_TARGET": "בחירת קטגוריית יעד",
+    "REAL_ONLY": "ניתן להעביר מוצרים רק בתוך קטלוג רגיל (לא וירטואלי)",
+    "PROPERTIES": "מאפיינים לעדכון",
+    "NEW_VALUES": "ערכים חדשים",
+    "START": "התחלה",
+    "CANCEL": "ביטול",
+    "JOB": {
+      "TITLE": "התקדמות",
+      "PROGRESS": "עובדו {processed} מתוך {total}, שגיאות: {errors}",
+      "DOWNLOAD": "הורדת קובץ"
+    }
+  }
+}

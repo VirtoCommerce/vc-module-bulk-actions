@@ -1,0 +1,25 @@
+{
+  "BULKACTIONS": {
+    "TITLE": "الإجراءات المجمّعة",
+    "ACTION": "الإجراء",
+    "ACTIONS": {
+      "CategoryChangeBulkAction": "تغيير الفئة",
+      "PropertiesUpdateBulkAction": "تحديث الخصائص"
+    },
+    "SCOPE_SELECTED": "العناصر المحددة ({count})",
+    "SCOPE_ALL": "كل العناصر في القائمة الحالية ({count})",
+    "TARGET": "النقل إلى",
+    "NO_TARGET": "غير محدد",
+    "PICK_TARGET": "اختر الفئة الهدف",
+    "REAL_ONLY": "لا يمكن نقل المنتجات إلا داخل كتالوج حقيقي",
+    "PROPERTIES": "الخصائص المراد تحديثها",
+    "NEW_VALUES": "القيم الجديدة",
+    "START": "بدء",
+    "CANCEL": "إلغاء",
+    "JOB": {
+      "TITLE": "التقدم",
+      "PROGRESS": "تمت معالجة {processed} من {total}، الأخطاء: {errors}",
+      "DOWNLOAD": "تنزيل الملف"
+    }
+  }
+}

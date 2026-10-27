@@ -1,0 +1,25 @@
+{
+  "BULKACTIONS": {
+    "TITLE": "Massåtgärder",
+    "ACTION": "Åtgärd",
+    "ACTIONS": {
+      "CategoryChangeBulkAction": "Ändra kategori",
+      "PropertiesUpdateBulkAction": "Uppdatera egenskaper"
+    },
+    "SCOPE_SELECTED": "{count} valda objekt",
+    "SCOPE_ALL": "Alla objekt i den aktuella listan ({count})",
+    "TARGET": "Flytta till",
+    "NO_TARGET": "Inte vald",
+    "PICK_TARGET": "Välj målkategori",
+    "REAL_ONLY": "Produkter kan bara flyttas inom en verklig katalog",
+    "PROPERTIES": "Egenskaper att uppdatera",
+    "NEW_VALUES": "Nya värden",
+    "START": "Starta",
+    "CANCEL": "Avbryt",
+    "JOB": {
+      "TITLE": "Förlopp",
+      "PROGRESS": "Bearbetade {processed} av {total}, fel: {errors}",
+      "DOWNLOAD": "Ladda ned fil"
+    }
+  }
+}
