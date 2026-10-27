@@ -1,0 +1,25 @@
+{
+  "BULKACTIONS": {
+    "TITLE": "Joukkotoiminnot",
+    "ACTION": "Toiminto",
+    "ACTIONS": {
+      "CategoryChangeBulkAction": "Vaihda kategoria",
+      "PropertiesUpdateBulkAction": "Päivitä ominaisuudet"
+    },
+    "SCOPE_SELECTED": "{count} valittua kohdetta",
+    "SCOPE_ALL": "Kaikki nykyisen luettelon kohteet ({count})",
+    "TARGET": "Siirrä kohteeseen",
+    "NO_TARGET": "Ei valittu",
+    "PICK_TARGET": "Valitse kohdekategoria",
+    "REAL_ONLY": "Tuotteita voi siirtää vain todellisen katalogin sisällä",
+    "PROPERTIES": "Päivitettävät ominaisuudet",
+    "NEW_VALUES": "Uudet arvot",
+    "START": "Käynnistä",
+    "CANCEL": "Peruuta",
+    "JOB": {
+      "TITLE": "Edistyminen",
+      "PROGRESS": "Käsitelty {processed}/{total}, virheitä: {errors}",
+      "DOWNLOAD": "Lataa tiedosto"
+    }
+  }
+}
